@@ -1,12 +1,17 @@
+using AspNetCoreHero.ToastNotification;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SanThuongMaiG15.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 
 namespace SanThuongMaiG15
@@ -23,7 +28,28 @@ namespace SanThuongMaiG15
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            var stringConnectdb = Configuration.GetConnectionString("dbEce");
+            services.AddDbContext<EcC2CContext>(options => options.UseSqlServer(stringConnectdb));
+            //services.AddMvc();
+
+            //services.AddDistributedMemoryCache();
+
+            //services.AddSession();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+            services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.All }));
+
+            //services.AddMemoryCache();
+
+            //services.AddResponseCompression();
+
+            //services.AddResponseCaching();
+
+            //services.AddSingleton<IFileProvider>(new PhysicalFileProvider(
+            //                            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
+
+            //services.AddMvc();
+            services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +74,10 @@ namespace SanThuongMaiG15
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
