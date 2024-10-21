@@ -1,0 +1,61 @@
+﻿@model SanThuongMaiG15.ModelViews.RegisterViewModel
+
+@{
+    ViewData["Title"] = "DangKyTaiKhoan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/assets/css/style.css" />
+    <div class="login-register-area section-space-y-axis-100">
+        <div class="container">
+            <div class="row">
+                <form asp-action="DangKyTaiKhoan">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="login-form">
+                            <h4 class="login-title">Đăng kí tài khoản</h4>
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <label>Họ và tên</label>
+                                    <input asp-for="Username" type="text" placeholder="">
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Địa chỉ Email</label>
+                                    <input asp-for="Email" type="email" placeholder="">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            
+                                <div class="col-md-6">
+                                <label >Số điện thoại</label>
+                                <input asp-for="PhoneNumber"  type="tel" placeholder="">
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                <label >Mật khẩu</label>
+                                <input asp-for="Password" class="form-control"  type="password" placeholder="">
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                <label>Nhập lại mật khẩu</label>
+                                <input type="password"  asp-for="ConfirmPassword" placeholder="Nhập lại mật khẩu" class="form-control" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                <label asp-for="RoleId">Loại tài khoản</label>
+                                <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
+                                <span asp-validation-for="RoleId" class="text-danger"></span>
+                             </div>
+                                <div class="col-6">
+                                    <button class="btn btn-custom-size lg-size btn-secondary btn-primary-hover rounded-0">Đăng kí</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}

@@ -5,4 +5,22 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Tùy Chọn
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a class="dropdown-item" href="/tai-khoan-cua-toi.html">Thông tin tài khoản của tôi</a>
+                <a class="dropdown-item" href="/dang-xuat.html">Đăng xuất</a>
+            }
+            else
+            {
+                <a class="dropdown-item" href="/dang-ky.html">Đăng kí</a>
+                <a class="dropdown-item" href="/dang-nhap.html">Đăng nhập</a>
+
+            }
+        </div>
+    </div>
 </div>

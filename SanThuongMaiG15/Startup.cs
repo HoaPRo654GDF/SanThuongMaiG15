@@ -1,14 +1,18 @@
-using AspNetCoreHero.ToastNotification;
+﻿using AspNetCoreHero.ToastNotification;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using SanThuongMaiG15.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
@@ -28,27 +32,37 @@ namespace SanThuongMaiG15
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             var stringConnectdb = Configuration.GetConnectionString("dbEce");
             services.AddDbContext<EcC2CContext>(options => options.UseSqlServer(stringConnectdb));
             //services.AddMvc();
 
-            //services.AddDistributedMemoryCache();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie(p =>
+                        {
+                            p.LoginPath = "/dang-nhap.html";
+                            p.LogoutPath = "/dang-xuat.html";
+                            p.AccessDeniedPath = "/";
+                            p.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Hết hạn sau 30 phút
+                            p.SlidingExpiration = true;
+                        });
+            services.AddDistributedMemoryCache();
 
-            //services.AddSession();
+            services.AddSession();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
             services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.All }));
 
-            //services.AddMemoryCache();
+            services.AddMemoryCache();
 
-            //services.AddResponseCompression();
+            services.AddResponseCompression();
 
-            //services.AddResponseCaching();
+            services.AddResponseCaching();
 
-            //services.AddSingleton<IFileProvider>(new PhysicalFileProvider(
-            //                            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
+            services.AddSingleton<IFileProvider>(new PhysicalFileProvider(
+                                        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
 
-            //services.AddMvc();
+            services.AddMvc();
             services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
         }
 
@@ -69,9 +83,10 @@ namespace SanThuongMaiG15
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession(); 
+            app.UseAuthentication(); 
             app.UseAuthorization();
-
+       
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
