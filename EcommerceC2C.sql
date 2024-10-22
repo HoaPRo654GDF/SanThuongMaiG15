@@ -51,9 +51,7 @@ CREATE TABLE [dbo].[Orders](
     [BuyerID] INT, -- Mã người mua                                                            
     [OrderDate] DATETIME , -- Ngày đặt hàng
     [TransactStatusID] INT NOT NULL, -- Mã trạng thái đơn hàng
-    [PaymentDate] DATETIME, -- Ngày thanh toán
-    [TotalMoney] DECIMAL(18,2) NOT NULL, -- Tổng tiền
-    [PaymentID] INT, -- Mã thanh toán             
+    [TotalMoney] DECIMAL(18,2) NOT NULL, -- Tổng tiền     
     [Note] NVARCHAR(MAX), -- Ghi chú
     [Address] NVARCHAR(MAX), -- Địa chỉ giao hàng
 )

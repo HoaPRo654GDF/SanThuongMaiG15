@@ -9,6 +9,7 @@ namespace SanThuongMaiG15.Models
     {
         public User()
         {
+            Orders = new HashSet<Order>();
             Products = new HashSet<Product>();
         }
 
@@ -22,6 +23,7 @@ namespace SanThuongMaiG15.Models
         public DateTime? CreateDate { get; set; }
 
         public virtual Role Role { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Product> Products { get; set; }
     }
 }

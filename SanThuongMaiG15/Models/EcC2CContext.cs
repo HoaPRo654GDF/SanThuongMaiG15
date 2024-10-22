@@ -58,13 +58,14 @@ namespace SanThuongMaiG15.Models
 
                 entity.Property(e => e.OrderDate).HasColumnType("datetime");
 
-                entity.Property(e => e.PaymentDate).HasColumnType("datetime");
-
-                entity.Property(e => e.PaymentId).HasColumnName("PaymentID");
-
                 entity.Property(e => e.TotalMoney).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.TransactStatusId).HasColumnName("TransactStatusID");
+
+                entity.HasOne(d => d.Buyer)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.BuyerId)
+                    .HasConstraintName("FK_Order_Buyer");
 
                 entity.HasOne(d => d.TransactStatus)
                     .WithMany(p => p.Orders)
@@ -86,6 +87,18 @@ namespace SanThuongMaiG15.Models
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
                 entity.Property(e => e.TotalMoney).HasColumnType("decimal(18, 2)");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderDetail_Order");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderDetail_Product");
             });
 
             modelBuilder.Entity<Product>(entity =>
