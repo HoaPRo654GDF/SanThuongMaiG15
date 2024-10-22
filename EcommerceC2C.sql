@@ -99,3 +99,6 @@ VALUES
 ('Seller', 'Người bán hàng'),
 ('Admin', 'Quản trị viên');
 
+INSERT INTO [dbo].[Users] (Username, Password, Email, PhoneNumber, RoleID, Active)
+VALUES 
+('admin', '25f9e794323b453885f5181f1b624d0b', 'admin@gmail.com', '0912345678', 3, 1); --mk đã mã hóa , điền 123456789

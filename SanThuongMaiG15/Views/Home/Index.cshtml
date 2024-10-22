@@ -14,6 +14,16 @@
             {
                 <a class="dropdown-item" href="/tai-khoan-cua-toi.html">Thông tin tài khoản của tôi</a>
                 <a class="dropdown-item" href="/dang-xuat.html">Đăng xuất</a>
+                @if (User.IsInRole("3"))
+                {
+                    <a class="dropdown-item" asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Admin</a>
+                }
+
+                <!-- Hiển thị tùy chọn vào Seller nếu RoleId = 2 -->
+                @if (User.IsInRole("2"))
+                {
+                    <a class="dropdown-item" asp-area="Seller" asp-controller="Home" asp-action="Index">Trang Seller</a>
+                }
             }
             else
             {

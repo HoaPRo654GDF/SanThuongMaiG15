@@ -46,6 +46,11 @@ namespace SanThuongMaiG15
                             p.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Hết hạn sau 30 phút
                             p.SlidingExpiration = true;
                         });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminPolicy", policy => policy.RequireRole("3"));
+                options.AddPolicy("SellerPolicy", policy => policy.RequireRole("2"));
+            });
             services.AddDistributedMemoryCache();
 
             services.AddSession();
