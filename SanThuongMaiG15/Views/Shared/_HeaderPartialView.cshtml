@@ -5,35 +5,16 @@
                 <div class="col-6">
                     <div class="header-top-left">
                         <ul class="dropdown-wrap text-matterhorn">
-                            <li class="dropdown">
-                                <button class="btn btn-link dropdown-toggle ht-btn" type="button" id="languageButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    English
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="languageButton">
-                                    <li><a class="dropdown-item" href="#">French</a></li>
-                                    <li><a class="dropdown-item" href="#">Italian</a></li>
-                                    <li><a class="dropdown-item" href="#">Spanish</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <button class="btn btn-link dropdown-toggle ht-btn" type="button" id="currencyButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    USD
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="currencyButton">
-                                    <li><a class="dropdown-item" href="#">GBP</a></li>
-                                    <li><a class="dropdown-item" href="#">ISO</a></li>
-                                </ul>
-                            </li>
-                            <li>
+@*                             <li>
                                 Call Us
                                 <a href="tel://3965410">3965410</a>
-                            </li>
+                            </li> *@
                         </ul>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="header-top-right text-matterhorn">
-                        <p class="shipping mb-0">Free delivery on order over <span>$200</span></p>
+                        <p class="shipping mb-0"></p>
                     </div>
                 </div>
             </div>
@@ -50,14 +31,14 @@
                         <div class="header-search-area d-none d-lg-block">
                             <form action="#" class="header-searchbox">
                                 <select class="nice-select select-search-category wide">
-                                    <option value="all">All Category</option>
+                                    <option value="all">Danh Mục</option>
                                     <option value="product-item">Product Item</option>
                                     <option value="product-item-2">Product Item 02</option>
                                     <option value="product-item-3">Product Item 03</option>
                                     <option value="product-item-4">Product Item 04</option>
                                     <option value="product-item-5">Product Item 05</option>
                                 </select>
-                                <input class="input-field" type="text" placeholder="Search Products">
+                                <input class="input-field" type="text" placeholder="Tìm kiếm ">
                                 <button class="btn btn-outline-whisper btn-primary-hover" type="submit"><i class="pe-7s-search"></i></button>
                             </form>
                         </div>
@@ -76,8 +57,7 @@
                                             {
                                                 <a class="dropdown-item" asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Admin</a>
                                             }
-
-                                            <!-- Hiển thị tùy chọn vào Seller nếu RoleId = 2 -->
+  
                                             @if (User.IsInRole("2"))
                                             {
                                                 <a class="dropdown-item" asp-area="Seller" asp-controller="Home" asp-action="Index">Trang Seller</a>
@@ -128,22 +108,22 @@
                             <nav class="main-nav">
                                 <ul>
                                     <li class="drop-holder">
-                                        <a href="/">Home</a>
-                                    </li>
-                                    <li>
-                                        <a asp-controller="Home" asp-action="About">About</a>
+                                        <a href="/">Trang Chủ</a>
                                     </li>
                                     <li>
                                         <a asp-controller="Product" asp-action="Index">Shop</a>
                                     </li>
                                     <li>
-                                        <a asp-controller="Page" asp-action="Index">Pages</a>
+                                        <a asp-controller="" asp-action="Index">Thời trang</a>
                                     </li>
                                     <li>
-                                        <a asp-controller="Blog" asp-action="Index">Blog</a>
+                                        <a asp-controller="" asp-action="About">Thể thao</a>
                                     </li>
                                     <li>
-                                        <a asp-controller="Home" asp-action="Contact">Contact</a>
+                                        <a asp-controller="" asp-action="Index">Công nghệ</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="" asp-action="Contact">Sức khỏe</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -163,26 +143,7 @@
                     <div class=" text-silver">
                         <p class="shipping mb-0">Free delivery on order over <span class="text-primary">$200</span></p>
                     </div>
-                    <ul class="dropdown-wrap justify-content-center text-silver">
-                        <li class="dropdown dropup">
-                            <button class="btn btn-link dropdown-toggle ht-btn" type="button" id="languageButtonTwo" data-bs-toggle="dropdown" aria-expanded="false">
-                                English
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="languageButtonTwo">
-                                <li><a class="dropdown-item" href="#">French</a></li>
-                                <li><a class="dropdown-item" href="#">Italian</a></li>
-                                <li><a class="dropdown-item" href="#">Spanish</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropup">
-                            <button class="btn btn-link dropdown-toggle ht-btn usd-dropdown" type="button" id="currencyButtonTwo" data-bs-toggle="dropdown" aria-expanded="false">
-                                USD
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="currencyButtonTwo">
-                                <li><a class="dropdown-item" href="#">GBP</a></li>
-                                <li><a class="dropdown-item" href="#">ISO</a></li>
-                            </ul>
-                        </li>
+                    <ul class="dropdown-wrap justify-content-center text-silver"> 
                         <li class="dropdown dropup">
                             <button class="btn btn-link dropdown-toggle ht-btn p-0" type="button" id="settingButtonTwo" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="pe-7s-users"></i>
@@ -208,22 +169,10 @@
                                         Home
                                         <i class="pe-7s-angle-down"></i>
                                     </span>
-                                </a>
-                                <ul class="sub-menu">
-                                    <li>
-                                        <a href="index.html">
-                                            <span class="mm-text">Home One</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="index-2.html">
-                                            <span class="mm-text">Home Two</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                </a>   
                             </li>
                             <li>
-                                <a href="about.html">
+                                <a href="#">
                                     <span class="mm-text">About Us</span>
                                 </a>
                             </li>
@@ -248,31 +197,7 @@
                                                     <span class="mm-text">Shop Default</span>
                                                 </a>
                                             </li>
-                                            <li>
-                                                <a href="shop-leftsidebar.html">
-                                                    <span class="mm-text">Shop Left Sidebar</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="shop-rightsidebar.html">
-                                                    <span class="mm-text">Shop Right Sidebar</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="shop-list-fullwidth.html">
-                                                    <span class="mm-text">Shop List Fullwidth</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="shop-list-left-sidebar.html">
-                                                    <span class="mm-text">Shop List Left Sidebar</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="shop-list-right-sidebar.html">
-                                                    <span class="mm-text">Shop List Right Sidebar</span>
-                                                </a>
-                                            </li>
+          
                                         </ul>
                                     </li>
                                     <li class="menu-item-has-children">
@@ -356,102 +281,7 @@
                                         </ul>
                                     </li>
                                 </ul>
-                            </li>
-                            <li class="menu-item-has-children">
-                                <a href="#">
-                                    <span class="mm-text">
-                                        Pages
-                                        <i class="pe-7s-angle-down"></i>
-                                    </span>
-                                </a>
-                                <ul class="sub-menu">
-                                    <li>
-                                        <a href="faq.html">
-                                            <span class="mm-text">Frequently Questions</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="404.html">
-                                            <span class="mm-text">Error 404</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="menu-item-has-children">
-                                <a href="#">
-                                    <span class="mm-text">
-                                        Blog
-                                        <i class="pe-7s-angle-down"></i>
-                                    </span>
-                                </a>
-                                <ul class="sub-menu">
-                                    <li class="menu-item-has-children">
-                                        <a href="#">
-                                            <span class="mm-text">
-                                                Blog Holder
-                                                <i class="pe-7s-angle-down"></i>
-                                            </span>
-                                        </a>
-                                        <ul class="sub-menu">
-                                            <li>
-                                                <a href="blog.html">
-                                                    <span class="mm-text">Blog Default</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-left-sidebar.html">
-                                                    <span class="mm-text">Blog Left Sidebar</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-right-sidebar.html">
-                                                    <span class="mm-text">Blog Right Sidebar</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-list-left-sidebar.html">
-                                                    <span class="mm-text">Blog List Left Sidebar</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-list-right-sidebar.html">
-                                                    <span class="mm-text">Blog List Right Sidebar</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item-has-children">
-                                        <a href="#">
-                                            <span class="mm-text">
-                                                Blog Detail Holder
-                                                <i class="pe-7s-angle-down"></i>
-                                            </span>
-                                        </a>
-                                        <ul class="sub-menu">
-                                            <li>
-                                                <a href="blog-detail.html">
-                                                    <span class="mm-text">Blog Detail Default</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-detail-left-sidebar.html">
-                                                    <span class="mm-text">Blog Detail Left Sidebar</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-detail-right-sidebar.html">
-                                                    <span class="mm-text">Blog Detail Right Sidebar</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="contact.html">
-                                    <span class="mm-text">Contact</span>
-                                </a>
-                            </li>
+                            </li>                    
                         </ul>
                     </nav>
                 </div>
