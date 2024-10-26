@@ -31,7 +31,7 @@ namespace SanThuongMaiG15.Controllers
                     .AsNoTracking()
                     .OrderByDescending(x => x.DatePosted);
                 PagedList<Product> models = new PagedList<Product>(lsProduct, pageNumber, pageSize);
-                ViewBag.CurrentPage = pageNumber;
+                ViewBag.CurrentPage = pageNumber; 
                 return View(models);
             }
             catch {
@@ -53,7 +53,7 @@ namespace SanThuongMaiG15.Controllers
                     .OrderByDescending(x => x.DatePosted);
                 PagedList<Product> models = new PagedList<Product>(lsProduct, page, pageSize);
                 ViewBag.CurrentPage = page;
-                ViewBag.CurrentCat = danhmuc;
+                ViewBag.CurrentCat = danhmuc; 
                 return View(models);
             }
             catch
@@ -93,5 +93,7 @@ namespace SanThuongMaiG15.Controllers
             }
             
         }
+
+    
     }
 }

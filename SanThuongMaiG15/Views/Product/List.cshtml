@@ -20,7 +20,7 @@
                         <h1 class="breadcrumb-heading">@category.CatName </h1>
                         <ul>
                             <li>
-                                <a href="/">Home <i class="pe-7s-angle-right"></i></a>
+                                <a asp-controller="Home" asp-action="Index">Trang chủ <i class="pe-7s-angle-right"></i></a>
                             </li>
                             <li>@category.CatName</li>
                         </ul>
@@ -43,27 +43,27 @@
                             </form>
                         </div>
                         <div class="widgets-area mb-9">
-                            <h2 class="widgets-title mb-5">Refine By</h2>
+                            <h2 class="widgets-title mb-5">Lọc Theo</h2>
                             <div class="widgets-item">
                                 <ul class="widgets-checkbox">
                                     <li>
                                         <input class="input-checkbox" type="checkbox" id="refine-item">
                                         <label class="label-checkbox mb-0" for="refine-item">
-                                            On Sale
+                                            Đang Giảm Giá
                                             <span>4</span>
                                         </label>
                                     </li>
                                     <li>
                                         <input class="input-checkbox" type="checkbox" id="refine-item-2" checked>
                                         <label class="label-checkbox mb-0" for="refine-item-2">
-                                            New
+                                            Mới
                                             <span>4</span>
                                         </label>
                                     </li>
                                     <li>
                                         <input class="input-checkbox" type="checkbox" id="refine-item-3">
                                         <label class="label-checkbox mb-0" for="refine-item-3">
-                                            In Stock
+                                            Còn Hàng
                                             <span>4</span>
                                         </label>
                                     </li>
@@ -71,47 +71,47 @@
                             </div>
                         </div>
                         <div class="widgets-area widgets-filter mb-9">
-                            <h2 class="widgets-title mb-5">Price Filter</h2>
+                            <h2 class="widgets-title mb-5">Lọc Theo Giá</h2>
                             <div class="price-filter">
                                 <div id="slider-range"></div>
                                 <div class="price-slider-amount">
-                                    <button class="btn btn-primary btn-secondary-hover">Filter</button>
+                                    <button class="btn btn-primary btn-secondary-hover">Lọc</button>
                                     <div class="label-input position-relative">
                                         <label>price : </label>
-                                        <input type="text" id="amount" name="price" placeholder="Add Your Price" />
+                                        <input type="text" id="amount" name="price" placeholder="Nhập Giá Của Bạn" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="widgets-area mb-9">
-                            <h2 class="widgets-title mb-5">Color</h2>
+                            <h2 class="widgets-title mb-5">Màu Sắc</h2>
                             <div class="widgets-item">
                                 <ul class="widgets-checkbox">
                                     <li>
                                         <input class="input-checkbox" type="checkbox" id="color-selection-1">
                                         <label class="label-checkbox mb-0" for="color-selection-1">
-                                            Green
+                                            Xanh lá
                                             <span>7</span>
                                         </label>
                                     </li>
                                     <li>
                                         <input class="input-checkbox" type="checkbox" id="color-selection-2" checked>
                                         <label class="label-checkbox mb-0" for="color-selection-2">
-                                            Cream
+                                            Kem
                                             <span>3</span>
                                         </label>
                                     </li>
                                     <li>
                                         <input class="input-checkbox" type="checkbox" id="color-selection-3">
                                         <label class="label-checkbox mb-0" for="color-selection-3">
-                                            Blue
+                                            Xanh dương
                                             <span>4</span>
                                         </label>
                                     </li>
                                     <li>
                                         <input class="input-checkbox" type="checkbox" id="color-selection-4">
                                         <label class="label-checkbox mb-0" for="color-selection-4">
-                                            Black
+                                            Đen
                                             <span>6</span>
                                         </label>
                                     </li>
@@ -119,7 +119,7 @@
                             </div>
                         </div>
                         <div class="widgets-area mb-9">
-                            <h2 class="widgets-title mb-5">Size</h2>
+                            <h2 class="widgets-title mb-5">Kích cỡ</h2>
                             <div class="widgets-item">
                                 <ul class="widgets-checkbox">
                                     <li>
@@ -141,115 +141,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="widgets-area mb-9">
-                            <h2 class="widgets-title mb-5">Top Rated Products</h2>
-                            <div class="widgets-item">
-                                <div class="swiper-container widgets-list-slider">
-                                    <div class="swiper-wrapper">
-                                        <div class="swiper-slide">
-                                            <div class="product-list-item">
-                                                <div class="product-img img-zoom-effect">
-                                                    <a href="single-product.html">
-                                                        <img class="img-full" src="~/assets/images/product/small-size/1-1-112x124.jpg" alt="Product Images">
-                                                    </a>
-                                                </div>
-                                                <div class="product-content">
-                                                    <a class="product-name" href="single-product.html">Dried Lemon Green</a>
-                                                    <div class="price-box pb-1">
-                                                        <span class="new-price">$80.00</span>
-                                                    </div>
-                                                    <div class="rating-box-wrap">
-                                                        <div class="rating-box">
-                                                            <ul>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="product-list-item">
-                                                <div class="product-img img-zoom-effect">
-                                                    <a href="single-product.html">
-                                                        <img class="img-full" src="~/assets/images/product/small-size/1-2-112x124.jpg" alt="Product Images">
-                                                    </a>
-                                                </div>
-                                                <div class="product-content">
-                                                    <a class="product-name" href="single-product.html">Natural Coconut</a>
-                                                    <div class="price-box pb-1">
-                                                        <span class="new-price">$80.00</span>
-                                                    </div>
-                                                    <div class="rating-box-wrap">
-                                                        <div class="rating-box">
-                                                            <ul>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="product-list-item">
-                                                <div class="product-img img-zoom-effect">
-                                                    <a href="single-product.html">
-                                                        <img class="img-full" src="~/assets/images/product/small-size/1-3-112x124.jpg" alt="Product Images">
-                                                    </a>
-                                                </div>
-                                                <div class="product-content">
-                                                    <a class="product-name" href="single-product.html">Black Peppepr Read</a>
-                                                    <div class="price-box pb-1">
-                                                        <span class="new-price">$80.00</span>
-                                                    </div>
-                                                    <div class="rating-box-wrap">
-                                                        <div class="rating-box">
-                                                            <ul>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                                <li><i class="pe-7s-star"></i></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="widgets-area">
-                            <h2 class="widgets-title mb-5">Tag</h2>
-                            <div class="widgets-item">
-                                <ul class="widgets-tags">
-                                    <li>
-                                        <a href="javascript:void(0)">Clothing</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)">Accessories</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)">For Men</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)">Women</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)">Fashion</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
                 <div class="col-lg-9 order-lg-2 order-1">

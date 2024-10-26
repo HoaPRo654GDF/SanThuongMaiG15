@@ -30,14 +30,6 @@
                         </a>
                         <div class="header-search-area d-none d-lg-block">
                             <form action="#" class="header-searchbox">
-                                <select class="nice-select select-search-category wide">
-                                    <option value="all">Danh Mục</option>
-                                    <option value="product-item">Product Item</option>
-                                    <option value="product-item-2">Product Item 02</option>
-                                    <option value="product-item-3">Product Item 03</option>
-                                    <option value="product-item-4">Product Item 04</option>
-                                    <option value="product-item-5">Product Item 05</option>
-                                </select>
                                 <input class="input-field" type="text" placeholder="Tìm kiếm ">
                                 <button class="btn btn-outline-whisper btn-primary-hover" type="submit"><i class="pe-7s-search"></i></button>
                             </form>
@@ -135,24 +127,36 @@
                     <a href="#" class="button-close"><i class="pe-7s-close"></i></a>
                 </div>
                 <div class="offcanvas-user-info text-center px-6 pb-5">
-                    <div class=" text-silver">
-                        <p class="shipping mb-0">Free delivery on order over <span class="text-primary">$200</span></p>
-                    </div>
+                  
                     <ul class="dropdown-wrap justify-content-center text-silver"> 
                         <li class="dropdown dropup">
                             <button class="btn btn-link dropdown-toggle ht-btn p-0" type="button" id="settingButtonTwo" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="pe-7s-users"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="settingButtonTwo">
-                                <li><a class="dropdown-item" href="my-account.html">My account</a></li>
-                                <li><a class="dropdown-item" href="login-register.html">Login | Register</a></li>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a class="dropdown-item" href="/tai-khoan-cua-toi.html">Thông tin tài khoản của tôi</a>
+                                    <a class="dropdown-item" href="/dang-xuat.html">Đăng xuất</a>
+                                    @if (User.IsInRole("3"))
+                                    {
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Admin</a>
+                                    }
+
+                                    @if (User.IsInRole("2"))
+                                    {
+                                        <a class="dropdown-item" asp-area="Seller" asp-controller="Home" asp-action="Index">Trang Seller</a>
+                                    }
+                                }
+                                else
+                                {
+                                    <a class="dropdown-item" href="/dang-ky.html">Đăng kí</a>
+                                    <a class="dropdown-item" href="/dang-nhap.html">Đăng nhập</a>
+
+                                }
                             </ul>
                         </li>
-                        <li>
-                            <a href="wishlist.html">
-                                <i class="pe-7s-like"></i>
-                            </a>
-                        </li>
+                        
                     </ul>
                 </div>
                 <div class="offcanvas-menu_area">
@@ -161,120 +165,36 @@
                             <li class="menu-item-has-children">
                                 <a href="#">
                                     <span class="mm-text">
-                                        Home
-                                        <i class="pe-7s-angle-down"></i>
+                                        Trang chủ
+                                        
                                     </span>
                                 </a>   
                             </li>
                             <li>
-                                <a href="#">
-                                    <span class="mm-text">About Us</span>
+                                <a asp-controller="Product" asp-action="Index">
+                                    <span class="mm-text">Shop</span>
                                 </a>
                             </li>
-                            <li class="menu-item-has-children">
-                                <a href="#">
-                                    <span class="mm-text">
-                                        Shop
-                                        <i class="pe-7s-angle-down"></i>
-                                    </span>
+                            <li>
+                                <a asp-controller="Product" asp-action="List" asp-route-CatName="Thoi Trang">
+                                    <span class="mm-text">Thời trang</span>
                                 </a>
-                                <ul class="sub-menu">
-                                    <li class="menu-item-has-children">
-                                        <a href="#">
-                                            <span class="mm-text">
-                                                Shop Layout
-                                                <i class="pe-7s-angle-down"></i>
-                                            </span>
-                                        </a>
-                                        <ul class="sub-menu">
-                                            <li>
-                                                <a href="shop.html">
-                                                    <span class="mm-text">Shop Default</span>
-                                                </a>
-                                            </li>
-          
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item-has-children">
-                                        <a href="#">
-                                            <span class="mm-text">
-                                                Product Style
-                                                <i class="pe-7s-angle-down"></i>
-                                            </span>
-                                        </a>
-                                        <ul class="sub-menu">
-                                            <li>
-                                                <a href="single-product.html">
-                                                    <span class="mm-text">Single Product Default</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="single-product-group.html">
-                                                    <span class="mm-text">Single Product Group</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="single-product-variable.html">
-                                                    <span class="mm-text">Single Product Variable</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="single-product-sale.html">
-                                                    <span class="mm-text">Single Product Sale</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="single-product-sticky.html">
-                                                    <span class="mm-text">Single Product Sticky</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="single-product-affiliate.html">
-                                                    <span class="mm-text">Single Product Affiliate</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item-has-children">
-                                        <a href="#">
-                                            <span class="mm-text">
-                                                Product Related
-                                                <i class="pe-7s-angle-down"></i>
-                                            </span>
-                                        </a>
-                                        <ul class="sub-menu">
-                                            <li>
-                                                <a href="my-account.html">
-                                                    <span class="mm-text">My Account</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="login-register.html">
-                                                    <span class="mm-text">Login | Register</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="cart.html">
-                                                    <span class="mm-text">Shopping Cart</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="wishlist.html">
-                                                    <span class="mm-text">Wishlist</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="compare.html">
-                                                    <span class="mm-text">Compare</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="checkout.html">
-                                                    <span class="mm-text">Checkout</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
+                            </li>
+                            <li>
+                                <a asp-controller="Product" asp-action="List" asp-route-CatName="The Thao">
+                                    <span class="mm-text">Thể thao</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-controller="Product" asp-action="List" asp-route-CatName="Cong Nghe">
+                                    <span class="mm-text">Công nghệ</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-controller="Product" asp-action="List" asp-route-CatName="Suc Khoe">
+                                    <span class="mm-text">Sức khỏe</span>
+                                </a>
+                            </li>  
                                 </ul>
                             </li>                    
                         </ul>

@@ -21,7 +21,6 @@ namespace SanThuongMaiG15.Controllers
             _logger = logger;
             _context = context;
         }
-
         public IActionResult Index(int? page)
         {
             try
