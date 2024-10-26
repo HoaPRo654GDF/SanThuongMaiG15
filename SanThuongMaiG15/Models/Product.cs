@@ -22,6 +22,7 @@ namespace SanThuongMaiG15.Models
         public DateTime? DatePosted { get; set; }
         public string ImageUrl { get; set; }
         public string ProductStatus { get; set; }
+        public string Thumb { get; set; }
 
         public virtual Category Cat { get; set; }
         public virtual User Seller { get; set; }

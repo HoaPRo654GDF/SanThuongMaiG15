@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PagedList.Core;
 using SanThuongMaiG15.Models;
 using System;
 using System.Collections.Generic;
@@ -11,18 +13,34 @@ namespace SanThuongMaiG15.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly EcC2CContext _context;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger , EcC2CContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
-            return View();
+            try
+            {
+                var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+                var pageSize = 10;
+                var lsProduct = _context.Products
+                    .AsNoTracking()
+                    .OrderByDescending(x => x.DatePosted);
+                PagedList<Product> models = new PagedList<Product>(lsProduct, pageNumber, pageSize);
+                ViewBag.CurrentPage = pageNumber;
+                return View(models);
+            }
+            catch
+            {
+                return RedirectToAction("Index");
+            }
         }
-
+        
         public IActionResult Privacy()
         {
             return View();

@@ -123,6 +123,8 @@ namespace SanThuongMaiG15.Models
 
                 entity.Property(e => e.SellerId).HasColumnName("SellerID");
 
+                entity.Property(e => e.Thumb).HasMaxLength(500);
+
                 entity.HasOne(d => d.Cat)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.CatId)
