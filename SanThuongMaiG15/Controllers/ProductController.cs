@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PagedList.Core;
+using System.Security.Claims;
 
 namespace SanThuongMaiG15.Controllers
 {
@@ -24,19 +25,39 @@ namespace SanThuongMaiG15.Controllers
         [Route("shop.html", Name = "ShopProduct")]
         public IActionResult Index(int? page)
         {
-            try {
+            try
+            {
                 var pageNumber = page == null || page <= 0 ? 1 : page.Value;
                 var pageSize = 10;
                 var lsProduct = _context.Products
                     .AsNoTracking()
                     .OrderByDescending(x => x.DatePosted);
-                PagedList<Product> models = new PagedList<Product>(lsProduct, pageNumber, pageSize);
-                ViewBag.CurrentPage = pageNumber; 
+                PagedList<Product> models = new PagedList<Product>(lsProduct.AsQueryable(), pageNumber, pageSize);
+                ViewBag.CurrentPage = pageNumber;
                 return View(models);
             }
-            catch {
+            catch
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    // Lấy RoleId của người dùng
+                    var roleId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+                    // Chuyển hướng dựa trên RoleId
+                    if (roleId == "3") // Nếu là admin
+                    {
+                        return Redirect("/Admin/Home/Index"); // Chuyển đến trang admin
+                    }
+                    else if (roleId == "2") // Nếu là seller
+                    {
+                        return Redirect("/Seller/Home/Index"); // Chuyển đến trang seller
+                    }
+
+                }
                 return RedirectToAction("Index", "Home");
             }
+           
+           
             
         }
         [Route("{CatName}", Name = "ListProduct")]
@@ -44,22 +65,40 @@ namespace SanThuongMaiG15.Controllers
         {
             try
             {
-
                 var pageSize = 10;
                 var danhmuc = _context.Categories.AsNoTracking().SingleOrDefault(x => x.CatName == CatName);
                 var lsProduct = _context.Products
                     .AsNoTracking()
                     .Where(x => x.CatId == danhmuc.CatId)
                     .OrderByDescending(x => x.DatePosted);
-                PagedList<Product> models = new PagedList<Product>(lsProduct, page, pageSize);
+                PagedList<Product> models = new PagedList<Product>(lsProduct.AsQueryable(), page, pageSize);
                 ViewBag.CurrentPage = page;
-                ViewBag.CurrentCat = danhmuc; 
+                ViewBag.CurrentCat = danhmuc;
                 return View(models);
             }
             catch
             {
-                return RedirectToAction("Index","Home");
+                if (User.Identity.IsAuthenticated)
+                {
+                    // Lấy RoleId của người dùng
+                    var roleId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+                    // Chuyển hướng dựa trên RoleId
+                    if (roleId == "3") // Nếu là admin
+                    {
+                        return Redirect("/Admin/Home/Index"); // Chuyển đến trang admin
+                    }
+                    else if (roleId == "2") // Nếu là seller
+                    {
+                        return Redirect("/Seller/Home/Index"); // Chuyển đến trang seller
+                    }
+
+
+                }
+                return RedirectToAction("Index", "Home");
             }
+                
+          
 
            
         }
@@ -68,8 +107,7 @@ namespace SanThuongMaiG15.Controllers
         [Route("/{ProductName}-{id}.html", Name= "ProductDetails")]
         public IActionResult Details(int id)
         {
-            try
-            {
+          
                 var product = _context.Products.Include(x => x.Cat).FirstOrDefault(x => x.ProductId == id);
                 if (product == null)
                 {
@@ -86,11 +124,7 @@ namespace SanThuongMaiG15.Controllers
 
                 ViewBag.SanPham = lsProduct;
                 return View(product);
-            }
-            catch
-            {
-                return RedirectToAction("Index", "Home");
-            }
+          
             
         }
 

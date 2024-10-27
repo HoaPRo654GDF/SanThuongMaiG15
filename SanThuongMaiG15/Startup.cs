@@ -42,7 +42,7 @@ namespace SanThuongMaiG15
                         {
                             p.LoginPath = "/dang-nhap.html";
                             p.LogoutPath = "/dang-xuat.html";
-                            p.AccessDeniedPath = "/";
+                            //p.AccessDeniedPath = "/";
                             p.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Hết hạn sau 30 phút
                             p.SlidingExpiration = true;
                         });
