@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SanThuongMaiG15.Models;
 using System;
@@ -36,7 +37,11 @@ namespace SanThuongMaiG15
             var stringConnectdb = Configuration.GetConnectionString("dbEce");
             services.AddDbContext<EcC2CContext>(options => options.UseSqlServer(stringConnectdb));
             //services.AddMvc();
-
+            services.AddLogging(builder =>
+            {
+                builder.AddConsole(); // Ghi log vào Console
+                builder.AddDebug(); // Ghi log vào Debug Output
+            });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie(p =>
                         {

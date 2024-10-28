@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +13,7 @@ using SanThuongMaiG15.Models;
 namespace SanThuongMaiG15.Areas.Seller.Controllers
 {
     [Area("Seller")]
+    [Authorize(Roles ="2")]
     public class SellerProductsController : Controller
     {
         private readonly EcC2CContext _context;
@@ -21,30 +24,60 @@ namespace SanThuongMaiG15.Areas.Seller.Controllers
         }
 
         // GET: Seller/SellerProducts
-        public IActionResult Index(int page = 1, int CatID = 0, int SellerID=0)
+        public IActionResult Index(int page = 1, int CatID = 0)
         {
-
             var pageNumber = page;
 
             var pageSize = 20;
-            List<Product> lsProducts = new List<Product>();
-            if (CatID != 0 && SellerID != 0)
+            if (!User.Identity.IsAuthenticated)
             {
-                lsProducts = _context.Products
-                .AsNoTracking()
-                .Where(x => x.CatId == CatID && x.SellerId == SellerID)
-                .Include(x => x.Cat)
-                .OrderByDescending(x => x.ProductId).ToList();
+                return RedirectToAction("Login", "Account"); 
             }
             else
             {
-                lsProducts = _context.Products
-                .AsNoTracking()
-                .Include(x => x.Cat)
-                .OrderByDescending(x => x.ProductId).ToList();
+                Console.WriteLine($"Authenticated User: {User.Identity.Name}");
             }
 
-
+            // Lấy tên người dùng đã đăng nhập
+            var email = User.Identity.Name;
+            
+            // Tìm người dùng trong cơ sở dữ liệu để lấy SellerID
+            var seller = _context.Users.FirstOrDefault(u => u.Email == email);
+            Console.WriteLine($"Email: {email}");
+            Console.WriteLine($"Seller Found: {seller?.UserId}, RoleID: {seller?.RoleId}");
+            if (seller == null)
+            {
+                
+                return NotFound("Người dùng không tồn tại."); 
+            }
+            //List<Product> lsProducts = new List<Product>();
+            //if (CatID != 0)
+            //{
+            //    lsProducts = _context.Products
+            //    .AsNoTracking()
+            //    .Where(x => x.CatId == CatID && x.SellerId == seller.UserId)
+            //    .Include(x => x.Cat)
+            //    .OrderByDescending(x => x.ProductId).ToList();
+            //}
+            //else
+            //{
+            //    lsProducts = _context.Products
+            //    .AsNoTracking()
+            //    .Include(x => x.Cat)
+            //    .OrderByDescending(x => x.ProductId).ToList();
+            //}
+            List<Product> lsProducts = new List<Product>();
+            lsProducts = _context.Products
+             .AsNoTracking()
+             .Include(x => x.Cat)
+             .Where(x => x.SellerId == seller.UserId)
+             .OrderByDescending(x => x.ProductId)
+             .ToList();
+            if (CatID != 0)
+            {
+                lsProducts = lsProducts.Where(x => x.CatId == CatID).ToList();
+            }
+            Console.WriteLine($"So luong san pham: {lsProducts.Count}");
             PagedList<Product> models = new PagedList<Product>(lsProducts.AsQueryable(), pageNumber, pageSize);
             ViewBag.CurrentCateID = CatID;
             ViewBag.currentPage = pageNumber;
@@ -79,6 +112,8 @@ namespace SanThuongMaiG15.Areas.Seller.Controllers
         // GET: Seller/SellerProducts/Create
         public IActionResult Create()
         {
+            
+
             ViewData["CatId"] = new SelectList(_context.Categories, "CatId", "CatName");
             ViewData["SellerId"] = new SelectList(_context.Users, "UserId", "Email");
             return View();
@@ -91,6 +126,13 @@ namespace SanThuongMaiG15.Areas.Seller.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProductId,ProductName,Description,CatId,Price,Quantity,SellerId,DatePosted,ImageUrl,ProductStatus,Thumb")] Product product)
         {
+            var email = User.Identity.Name;
+            var seller = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (seller != null)
+            {
+                product.SellerId = seller.UserId;
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(product);
@@ -127,6 +169,13 @@ namespace SanThuongMaiG15.Areas.Seller.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProductId,ProductName,Description,CatId,Price,Quantity,SellerId,DatePosted,ImageUrl,ProductStatus,Thumb")] Product product)
         {
+            var email = User.Identity.Name;
+            var seller = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (seller != null)
+            {
+                product.SellerId = seller.UserId;
+            }
             if (id != product.ProductId)
             {
                 return NotFound();

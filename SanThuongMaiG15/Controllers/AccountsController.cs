@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SanThuongMaiG15.Extension;
 using SanThuongMaiG15.Models;
 using SanThuongMaiG15.ModelViews;
@@ -21,11 +22,12 @@ namespace SanThuongMaiG15.Controllers
     {
         private readonly EcC2CContext _context;
         public INotyfService _notifyService { get; }
-
-        public AccountsController(EcC2CContext context, INotyfService notifyService)
+        private readonly ILogger<AccountsController> _logger;
+        public AccountsController(EcC2CContext context, INotyfService notifyService, ILogger<AccountsController> logger)
         {
             _context = context;
             _notifyService = notifyService;
+            _logger = logger;
         }
 
        
@@ -93,10 +95,11 @@ namespace SanThuongMaiG15.Controllers
             // Tạo Claims và đăng nhập người dùng
             var claims = new List<Claim>
                 {
-                new Claim(ClaimTypes.Email, khachhang.Email),
+                new Claim(ClaimTypes.Name, khachhang.Email),
                 new Claim("UserID", khachhang.UserId.ToString()),
                 new Claim(ClaimTypes.Role, khachhang.RoleId.ToString())
                 };
+          
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
@@ -104,6 +107,7 @@ namespace SanThuongMaiG15.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
             _notifyService.Success("Đăng nhập thành công!");
+            _logger.LogInformation($"Email: {khachhang.Email}, UserID: {khachhang.UserId}, RoleID: {khachhang.RoleId}");
 
             //switch (khachhang.RoleId)
             //{

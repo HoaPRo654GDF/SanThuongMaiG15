@@ -1,90 +1,101 @@
-﻿@model IEnumerable<SanThuongMaiG15.Models.Product>
+﻿@using PagedList.Core.Mvc;
+@model PagedList.Core.IPagedList<SanThuongMaiG15.Models.Product>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Quản lý sản phẩm";
     Layout = "~/Areas/Seller/Views/Shared/_SellerLayout.cshtml";
 }
 
-<h1>Index</h1>
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Seller" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <span class="breadcrumb-item active">Danh sách sản phẩm</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+                <div class="d-md-flex">
+                    <div class="m-b-10 m-r-15">
+                        <select class="custom-select" id="txtCatID" name="txtCatID" style="min-width: 200px;" asp-items="ViewBag.DanhMuc">
+                            <option disabled selected>Chọn Danh Mục</option>
+                            <option value="0">All</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-right">
+                <a class="btn btn-primary" asp-controller="SellerProducts" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Add Product</span></a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Danh mục</th>
+                        <th>Giá</th>
+                        <th>Tồn kho</th>
+                        <th>Trạng thái</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (@Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @item.ProductId
+                                </td>
+                                <td>
+                                    @item.ProductName
+                                </td>
+                                <td>@item.Cat.CatName</td>
+                                <td>@item.Price.ToString("#,##0") VND</td>
+                                
+                                <td>@item.Quantity</td>
+                                <td>
+                                    @if (item.Quantity > 0)
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Còn hàng</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Hết hàng</div>
+                                        </div>
+                                    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DatePosted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Thumb)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cat)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Seller)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DatePosted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Thumb)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cat.CatName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Seller.Email)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary m-r-5" asp-area="Seller" asp-controller="SellerProducts" asp-action="Details" asp-route-id="@item.ProductId">View</a>
+                                    <a class="btn btn-secondary m-r-5 " asp-area="Seller" asp-controller="SellerProducts" asp-action="Edit" asp-route-id="@item.ProductId">Edit</a>
+                                    <a class="btn btn-success m-r-5" asp-area="Seller" asp-controller="SellerProducts" asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+
+                                </td>
+                            </tr>
+
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-area="Seller" asp-controller="SellerProducts" asp-route-CatID="ViewBag.CurrentCateID" asp-action="Index" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
