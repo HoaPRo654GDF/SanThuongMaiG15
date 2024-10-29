@@ -26,7 +26,7 @@
                 <div class="col-lg-12">
                     <div class="header-middle-wrap">
                         <a href="index.html" class="header-logo">
-                            <img src="~/assets/images/logo/dark.png" alt="Header Logo">
+                            <img src="~/assets/images/logo/Logo3.png" alt="Header Logo">
                         </a>
                         <div class="header-search-area d-none d-lg-block">
                             <form action="#" class="header-searchbox">
@@ -47,13 +47,13 @@
                                             <a class="dropdown-item" href="/dang-xuat.html">Đăng xuất</a>
                                             @if (User.IsInRole("3"))
                                             {
-                                                <a class="dropdown-item" asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Admin</a>
+                                                <a class="dropdown-item" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
                                             }
   
                                             @if (User.IsInRole("2"))
                                             {
 
-                                                <a class="dropdown-item" asp-area="Seller" asp-controller="Home" asp-action="Index">Trang Seller</a>
+                                                <a class="dropdown-item" asp-area="Seller" asp-controller="Home" asp-action="Index">Seller</a>
                                             }
                                         }
                                         else
@@ -72,7 +72,7 @@
                                 <li class="minicart-wrap me-3 me-lg-0">
                                     <a href="#miniCart" class="minicart-btn toolbar-btn">
                                         <i class="pe-7s-shopbag"></i>
-                                        <span class="quantity">3</span>
+                                        <span class="quantity" >3</span>
                                     </a>
                                 </li>
                                 <li class="mobile-menu_wrap d-block d-lg-none">
@@ -87,7 +87,7 @@
             </div>
         </div>
     </div>
-    <div class="main-header header-sticky" data-bg-color="#bac34e">
+    <div class="main-header header-sticky" data-bg-color="#f0ad4e">
         <div class="container">
             <div class="main-header_nav position-relative">
                 <div class="row align-items-center">
@@ -99,7 +99,7 @@
                                         <a href="/">Trang Chủ</a>
                                     </li>
                                     <li>
-                                        <a asp-controller="Product" asp-action="Index">Shop</a>
+                                        <a asp-controller="Product" asp-action="Index">Mua sắm</a>
                                     </li>
                                     <li>
                                         <a asp-controller="Product" asp-action="List" asp-route-CatName="Thoi Trang">Thời trang</a>
