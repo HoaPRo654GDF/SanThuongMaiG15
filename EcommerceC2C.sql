@@ -155,6 +155,12 @@ VALUES
 ('Bong Banh Ngoai Troi', 'Bong banh ngoai troi, chong nuoc, mau xanh.', 4, 50000, 60, 16, GETDATE(), 'https://example.com/outdoor-ball.jpg', 'Con hang');
 GO
 
+Go
+INSERT INTO [dbo].[Products] (ProductName, [Description], CatID, Price, Quantity, SellerID, DatePosted, ImageURL, ProductStatus) 
+VALUES 
+-- Thời Trang
+('Giày bánh bao Fukau 5', 'Giay thể thao Fukau size 41, màu trắng.', 1, 2200000, 3, 15, GETDATE(), 'https://example.com/nike-af1.jpg', 'Con hang');
+Go
 Select*From Products;
 Go
 UPDATE [dbo].[Products]
@@ -176,3 +182,6 @@ ALTER COLUMN [ProductStatus] NVARCHAR(50) COLLATE Vietnamese_CI_AS;
 ALTER DATABASE EcC2C COLLATE Vietnamese_CI_AS;
 
 SELECT DATABASEPROPERTYEX('EcC2C', 'Collation') AS DatabaseCollation;
+
+SELECT * FROM Users WHERE Email = 'tph5@gmail.com';
+SELECT * FROM Products WHERE SellerID = 16 AND CatID = 1;
