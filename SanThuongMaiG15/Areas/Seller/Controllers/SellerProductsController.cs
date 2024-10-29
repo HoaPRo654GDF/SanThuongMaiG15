@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -29,9 +30,19 @@ namespace SanThuongMaiG15.Areas.Seller.Controllers
             var pageNumber = page;
 
             var pageSize = 20;
+
+            //var sellerID = HttpContext.Session.GetInt32("SellerID");
+            //if (sellerID == null)
+            //{
+            //    return RedirectToAction("Login", "Account");
+            //}
+
+            //Console.WriteLine($"Authenticated SellerID: {sellerID}");
+
+
             if (!User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Login", "Account"); 
+                return RedirectToAction("Login", "Account");
             }
             else
             {
@@ -40,36 +51,21 @@ namespace SanThuongMaiG15.Areas.Seller.Controllers
 
             // Lấy tên người dùng đã đăng nhập
             var email = User.Identity.Name;
-            
+
             // Tìm người dùng trong cơ sở dữ liệu để lấy SellerID
             var seller = _context.Users.FirstOrDefault(u => u.Email == email);
             Console.WriteLine($"Email: {email}");
             Console.WriteLine($"Seller Found: {seller?.UserId}, RoleID: {seller?.RoleId}");
             if (seller == null)
             {
-                
-                return NotFound("Người dùng không tồn tại."); 
+
+                return NotFound("Người dùng không tồn tại.");
             }
-            //List<Product> lsProducts = new List<Product>();
-            //if (CatID != 0)
-            //{
-            //    lsProducts = _context.Products
-            //    .AsNoTracking()
-            //    .Where(x => x.CatId == CatID && x.SellerId == seller.UserId)
-            //    .Include(x => x.Cat)
-            //    .OrderByDescending(x => x.ProductId).ToList();
-            //}
-            //else
-            //{
-            //    lsProducts = _context.Products
-            //    .AsNoTracking()
-            //    .Include(x => x.Cat)
-            //    .OrderByDescending(x => x.ProductId).ToList();
-            //}
             List<Product> lsProducts = new List<Product>();
             lsProducts = _context.Products
              .AsNoTracking()
              .Include(x => x.Cat)
+             //.Where(x => x.SellerId == sellerID)
              .Where(x => x.SellerId == seller.UserId)
              .OrderByDescending(x => x.ProductId)
              .ToList();
@@ -126,6 +122,12 @@ namespace SanThuongMaiG15.Areas.Seller.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProductId,ProductName,Description,CatId,Price,Quantity,SellerId,DatePosted,ImageUrl,ProductStatus,Thumb")] Product product)
         {
+            //var sellerID = HttpContext.Session.GetInt32("SellerID");
+
+            //if (sellerID != null)
+            //{
+            //    product.SellerId = sellerID.Value;
+            //}
             var email = User.Identity.Name;
             var seller = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
 
@@ -169,6 +171,12 @@ namespace SanThuongMaiG15.Areas.Seller.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProductId,ProductName,Description,CatId,Price,Quantity,SellerId,DatePosted,ImageUrl,ProductStatus,Thumb")] Product product)
         {
+            //var sellerID = HttpContext.Session.GetInt32("SellerID");
+
+            //if (sellerID != null)
+            //{
+            //    product.SellerId = sellerID.Value;
+            //}
             var email = User.Identity.Name;
             var seller = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
 

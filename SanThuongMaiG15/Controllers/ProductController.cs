@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PagedList.Core;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace SanThuongMaiG15.Controllers
 {
@@ -38,19 +39,20 @@ namespace SanThuongMaiG15.Controllers
             }
             catch
             {
+
                 if (User.Identity.IsAuthenticated)
                 {
                     // Lấy RoleId của người dùng
                     var roleId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
                     // Chuyển hướng dựa trên RoleId
-                    if (roleId == "3") // Nếu là admin
+                    if (roleId == "3")
                     {
-                        return Redirect("/Admin/Home/Index"); // Chuyển đến trang admin
+                        return Redirect("/Admin/Home/Index");
                     }
-                    else if (roleId == "2") // Nếu là seller
+                    else if (roleId == "2")
                     {
-                        return Redirect("/Seller/Home/Index"); // Chuyển đến trang seller
+                        return Redirect("/Seller/Home/Index");
                     }
 
                 }
@@ -78,6 +80,7 @@ namespace SanThuongMaiG15.Controllers
             }
             catch
             {
+               
                 if (User.Identity.IsAuthenticated)
                 {
                     // Lấy RoleId của người dùng

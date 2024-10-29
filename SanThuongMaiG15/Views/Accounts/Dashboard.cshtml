@@ -5,57 +5,77 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Dashboard</h1>
+<div class="container" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div class="card" style="border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; max-width: 600px;">
+        <div class="card-body" style="padding: 20px;">
+            <h4 class="card-title" style="margin-bottom: 20px; font-size: 1.5rem; color: #333; text-align: center;">Thông tin tài khoản</h4>
+            <div class="table-responsive">
+                <table class="product-info-table m-t-20" style="width: 100%; border-collapse: collapse;">
+                    <tbody>
+                        <tr>
+                            <td>ID:</td>
+                            <td class="text-dark font-weight-semibold" style="color: #212529; font-weight: 600;">@Model.UserId</td>
+                        </tr>
+                        <tr>
+                            <td>Tên người dùng:</td>
+                            <td>@Model.Username</td>
+                        </tr>
+                        <tr>
+                            <td>Mật khẩu:</td>
+                            <td>@Model.Password</td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td>@Model.Email</td>
+                        </tr>
+                        <tr>
+                            <td>Số điện thoại:</td>
+                            <td>@Model.PhoneNumber</td>
+                        </tr>
+                        <tr>
+                            <td>Trạng thái:</td>
+                            <td>@Model.Active</td>
+                        </tr>
+                        <tr>
+                            <td>Ngày tạo:</td>
+                            <td>@Model.CreateDate</td>
+                        </tr>
+                        <tr>
+                            <td>Quyền:</td>
+                            <td>@Model.RoleId</td>
+                        </tr>
+                        <tr>
+                            <td>Chỉnh sửa:</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@Model.UserId" class="btn btn-primary"
+                                   style="background-color: #007bff; color: white; padding: 8px 12px; border: none;
+                                   border-radius: 4px; text-decoration: none;">Edit</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div>
-    <h4>User</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Username)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Username)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Active)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Active)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreateDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreateDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Role)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Role.RoleName)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.UserId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<style>
+    .product-info-table td {
+        padding: 10px; 
+        border-bottom: 1px solid #ddd; 
+    }
+
+    .product-info-table tr:nth-child(even) {
+        background-color: #f9f9f9; 
+    }
+
+    .product-info-table tr:hover {
+        background-color: #f1f1f1; 
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3; 
+    }
+</style>
+
+

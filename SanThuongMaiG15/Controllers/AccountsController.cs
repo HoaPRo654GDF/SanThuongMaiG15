@@ -41,6 +41,18 @@ namespace SanThuongMaiG15.Controllers
                 return RedirectToAction("Login");
             }
 
+            //// Kiểm tra nếu người dùng chưa đăng nhập
+            //var userId = HttpContext.Session.GetInt32("UserID");
+            //if (userId == null)
+            //{
+            //    return RedirectToAction("Login");
+            //}
+            //var khachhang = _context.Users.AsNoTracking().SingleOrDefault(x => x.UserId == userId);
+            //if (khachhang != null)
+            //{
+            //    return View(khachhang);
+            //}
+
             // Lấy ID người dùng từ claims
             var userIdClaim = User.FindFirst("UserID")?.Value;
             if (int.TryParse(userIdClaim, out int taikhoanID))
@@ -48,15 +60,86 @@ namespace SanThuongMaiG15.Controllers
                 var khachhang = _context.Users.AsNoTracking().SingleOrDefault(x => x.UserId == taikhoanID);
                 if (khachhang != null)
                 {
-                    return View(khachhang); // Trả về view với thông tin tài khoản
+                    return View(khachhang);
                 }
             }
 
-            // Nếu không tìm thấy người dùng, chuyển hướng về trang đăng nhập
+
             return RedirectToAction("Login");
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,Username,Email,PhoneNumber")] User user)
+        {
+            if (id != user.UserId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    
+                    var existingUser = await _context.Users.FindAsync(id);
+                    if (existingUser == null)
+                    {
+                        return NotFound(); 
+                    }
+
+                   
+                    existingUser.Username = user.Username;
+                    existingUser.Email = user.Email;
+                    existingUser.PhoneNumber = user.PhoneNumber;
+
+                  
+                    _context.Update(existingUser);
+                    await _context.SaveChangesAsync(); 
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserExists(user.UserId))
+                    {
+                        return NotFound(); 
+                    }
+                    else
+                    {
+                        throw; 
+                    }
+                }
+                return RedirectToAction("Dashboard"); 
+            }
+
+            
+            return View(user);
         }
 
        
+        private bool UserExists(int id)
+        {
+            return _context.Users.Any(e => e.UserId == id);
+        }
+
         [HttpGet]
         [AllowAnonymous]
         [Route("dang-nhap.html", Name = "DangNhap")]
@@ -64,13 +147,15 @@ namespace SanThuongMaiG15.Controllers
         {
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                // Nếu đã đăng nhập, chuyển hướng đến Dashboard
+                
                 return RedirectToAction("Dashboard", "Accounts");
             }
 
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
+
+        
 
         [HttpPost]
         [AllowAnonymous]
@@ -92,6 +177,11 @@ namespace SanThuongMaiG15.Controllers
                 return View(user);
             }
 
+            // Lưu thông tin người dùng vào Session
+            HttpContext.Session.SetInt32("UserID", khachhang.UserId);
+            HttpContext.Session.SetString("UserName", khachhang.Email);
+            HttpContext.Session.SetInt32("RoleID", khachhang.RoleId);
+
             // Tạo Claims và đăng nhập người dùng
             var claims = new List<Claim>
                 {
@@ -99,7 +189,7 @@ namespace SanThuongMaiG15.Controllers
                 new Claim("UserID", khachhang.UserId.ToString()),
                 new Claim(ClaimTypes.Role, khachhang.RoleId.ToString())
                 };
-          
+
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
@@ -109,23 +199,13 @@ namespace SanThuongMaiG15.Controllers
             _notifyService.Success("Đăng nhập thành công!");
             _logger.LogInformation($"Email: {khachhang.Email}, UserID: {khachhang.UserId}, RoleID: {khachhang.RoleId}");
 
-            //switch (khachhang.RoleId)
-            //{
-            //    case 3: // Admin
-            //        return RedirectToAction("Index", "Home", new { area = "Admin" });
-            //    case 2: // Seller
-            //        return RedirectToAction("Index", "Home", new { area = "Seller" });
-            //    default: // Người dùng thông thường
-            //        return RedirectToAction("Index", "Home");
-            //}
-
             //Nếu có returnUrl hợp lệ, chuyển đến đó
             if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
             {
                 return LocalRedirect(returnUrl);
             }
 
-            //Ngược lại chuyển đến Index Home
+           
             return RedirectToAction("Index", "Home");
         }
 
@@ -166,19 +246,24 @@ namespace SanThuongMaiG15.Controllers
                     _context.Add(tk);
                     await _context.SaveChangesAsync();
 
-            //        // Thiết lập session và đăng nhập
-            //        HttpContext.Session.SetString("UserID", tk.UserId.ToString());
-            //        var claims = new List<Claim>
-            //{
-            //    new Claim(ClaimTypes.Name, tk.Username),
-            //    new Claim("UserID", tk.UserId.ToString()),
-            //};
+                    ////Thiết lập session và đăng nhập
+                    //HttpContext.Session.SetString("UserID", tk.UserId.ToString());
+                    //var claims = new List<Claim>
+                    //        {
+                    //          new Claim(ClaimTypes.Name, tk.Username),
+                    //          new Claim("UserID", tk.UserId.ToString()),
+                    //        };
 
-            //        ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
-            //        ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-            //        await HttpContext.SignInAsync(claimsPrincipal);
+                    //ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
+                    //ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                    //await HttpContext.SignInAsync(claimsPrincipal);
 
-                    // Chuyển hướng đến Dashboard hoặc trang chủ
+
+                    ////// Thiết lập session đăng nhập
+                    ////HttpContext.Session.SetInt32("UserID", tk.UserId);
+                    ////HttpContext.Session.SetString("UserName", tk.Email);
+                    ////HttpContext.Session.SetInt32("RoleID", tk.RoleId);
+
                     return RedirectToAction("Login", "Accounts");
                 }
             }
@@ -210,19 +295,7 @@ namespace SanThuongMaiG15.Controllers
 
             return Json(true);
         }
-        //[HttpGet]
-        //[Route("dang-xuat.html", Name = "DangXuat")]
-        //public async Task<IActionResult> Logout()
-        //{
-        //    // Đăng xuất người dùng
-        //    await HttpContext.SignOutAsync();
-
-        //    // Xóa tất cả session
-        //    HttpContext.Session.Clear();
-
-        //    // Chuyển hướng về trang chủ hoặc trang mà bạn muốn
-        //    return RedirectToAction("Index", "Home");
-        //}
+        
         [HttpGet]
         [Route("dang-xuat.html", Name = "DangXuat")]
         public async Task<IActionResult> Logout()
@@ -237,20 +310,7 @@ namespace SanThuongMaiG15.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        //// Action đăng xuất với HTTP POST
-        //[HttpPost]
-        //[Route("dang-xuat.html", Name = "DangXuatPost")]
-        //public async Task<IActionResult> LogoutPost()
-        //{
-        //    // Đăng xuất người dùng
-        //    await HttpContext.SignOutAsync();
-
-        //    // Xóa tất cả session
-        //    HttpContext.Session.Clear();
-
-        //    // Chuyển hướng về trang chủ hoặc trang mà bạn muốn
-        //    return RedirectToAction("Index", "Home");
-        //}
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("dang-xuat.html", Name = "DangXuatPost")]

@@ -39,16 +39,24 @@ namespace SanThuongMaiG15
             //services.AddMvc();
             services.AddLogging(builder =>
             {
-                builder.AddConsole(); // Ghi log vào Console
-                builder.AddDebug(); // Ghi log vào Debug Output
+                builder.AddConsole(); 
+                builder.AddDebug(); 
             });
+            //Cấu hình session
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+            //Cấu hình cookie
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie(p =>
                         {
                             p.LoginPath = "/dang-nhap.html";
                             p.LogoutPath = "/dang-xuat.html";
                             //p.AccessDeniedPath = "/";
-                            p.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Hết hạn sau 30 phút
+                            p.ExpireTimeSpan = TimeSpan.FromMinutes(30); 
                             p.SlidingExpiration = true;
                         });
             services.AddAuthorization(options =>
@@ -56,6 +64,8 @@ namespace SanThuongMaiG15
                 options.AddPolicy("AdminPolicy", policy => policy.RequireRole("3"));
                 options.AddPolicy("SellerPolicy", policy => policy.RequireRole("2"));
             });
+
+
             services.AddDistributedMemoryCache();
 
             services.AddSession();

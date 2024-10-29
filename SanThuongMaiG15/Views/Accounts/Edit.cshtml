@@ -1,0 +1,81 @@
+﻿@model SanThuongMaiG15.Models.User
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div class="card" style="border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; max-width: 600px;">
+        <div class="card-body" style="padding: 20px;">
+            <h1 style="margin-bottom: 20px; font-size: 1.5rem; color: #333; text-align: center;">Chỉnh sửa tài khoản</h1>
+
+            <form asp-action="Edit" method="post">
+                <div class="form-group">
+                    <label asp-for="Username">Tên tài khoản</label>
+                    <input asp-for="Username" class="form-control" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password">Mật khẩu</label>
+                    <span class="form-control">@Model.Password</span>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email">Email</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber">Số điện thoại</label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Active">Trạng thái</label>
+                    <span class="form-control">@Model.Active</span>
+                    <span asp-validation-for="Active" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CreateDate">Ngày tạo</label>
+                    <span class="form-control">@Model.CreateDate</span>
+                    <span asp-validation-for="CreateDate" class="text-danger"></span>
+                </div>
+                <input type="hidden" asp-for="UserId" />
+                <div style="text-align: center; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="width: 50%;">Cập nhật</button>
+                </div>
+            </form>
+
+           
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-group {
+        margin-bottom: 15px; 
+    }
+
+    .form-control {
+        border: 1px solid #ced4da; 
+        border-radius: 4px; 
+
+    .btn-primary {
+        background-color: #007bff; 
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3; 
+    }
+
+    .btn-secondary {
+        background-color: #6c757d; 
+        color: white;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268; 
+    }
+</style>
