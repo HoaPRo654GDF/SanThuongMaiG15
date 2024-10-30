@@ -87,11 +87,12 @@
                                 <ul class="quantity-with-btn pb-7">
                                     <li class="quantity">
                                         <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" value="1" type="text">
+                                            <input id="txtsoluong" name="txtsoluong" class="cart-plus-minus-box" value="1" type="text">
                                         </div>
                                     </li>
                                     <li class="add-to-cart">
-                                        <a class="btn btn-custom-size lg-size btn-primary btn-secondary-hover rounded-0" href="cart.html">Thêm giỏ hàng</a>
+                                        <a class="btn btn-custom-size lg-size btn-primary btn-secondary-hover rounded-0" >Thêm giỏ hàng</a>
+                                        <input  hidden id="ProductId" asp-for="ProductId" />
                                     </li>
                                 </ul>
                                 <div class="product-category text-matterhorn pb-2">
@@ -364,3 +365,153 @@
     </div>
 </main>
 <!-- Main Content Area End Here  -->
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".add-to-cart").click(function () {
+                var productid = $('#ProductId').val();
+                var soLuong = parseInt($('#txtsoluong').val()) || 1;
+                if (!productid || soLuong <= 0) {
+                    alert("Vui lòng chọn sản phẩm và nhập số lượng hợp lệ.");
+                    return;
+                }// Sửa lại ID đúng của input số lượng
+                $.ajax({
+                    url: '/api/cart/add',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productID: productid,
+                        quantity: soLuong
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            loadHeaderCart(); // Cập nhật giỏ hàng hiển thị
+                            location.reload();
+                        } else {
+                            alert("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.");
+                        }
+                    },
+                    error: function (error) {
+                        alert("Có lỗi xảy ra: " + error.responseText);
+                    }
+                });
+            });
+
+            function loadHeaderCart() {
+                $("#miniCart").load("/AjaxContent/HeaderCart");
+                $("#numberCart").load("/AjaxContent/NumberCart");
+            }
+        });
+    </script>
+}
+@* @section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".add-to-cart").click(function () {
+                var productid = $('#ProductId').val();
+                var soLuong = $('#txtsoluong').val(); // Sửa lại ID đúng của input số lượng
+                $.ajax({
+                    url: '/api/cart/add',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productID: productid,
+                        quantity: soLuong
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            loadHeaderCart();
+                            location.reload();
+                        } else {
+                            alert("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.");
+                        }
+                    },
+                    error: function (error) {
+                        alert("Có lỗi xảy ra: " + error.responseText);
+                    }
+                });
+            });
+
+            function loadHeaderCart() {
+                $("#miniCart").load("/AjaxContent/HeaderCart");
+                $("#numberCart").load("/AjaxContent/NumberCart");
+            }
+        });
+    </script>
+} *@
+
+@* @section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $(".add-to-cart").click(function () {
+                    var productid = $('#ProductId').val();
+                    var soluong = $('#txtsoluong').val();
+                    $.ajax({
+                        url: '/api/cart/add',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: { 
+                            productID: productid,
+                            quantity: soluong
+
+                        },
+                        success: function (response) {
+                          
+                                loadHeaderCart();// Add Product sucsess
+                                // location.reload();
+                           
+                        },
+                        error: function (error) {
+                            alert("There was an error posting the data to the server: " + error.responseText);
+                        }
+                    });
+                });
+            // });
+                function loadHeaderCart() {
+                    $("#miniCart").load("/AjaxContent/HeaderCart");
+                    $("#numberCart").load("/AjaxContent/NumberCart");
+                }
+                // $(".removecart").click(function () {
+                //     var productid = $(this).attr("data-productid");
+                //     $.ajax({
+                //         url: "api/cart/remove",
+                //         type: "POST",
+                //         dataType: "JSON",
+                //         data: { productID: productid },
+                //         success: function (result) {
+                //             if (result.success) {
+                //                 loadHeaderCart();//Reload lai gio hang
+                //                 location.reload();
+                //             }
+                //         },
+                //         error: function (rs) {
+                //             alert("Remove Cart Error !");
+                //         }
+                //     });
+                // });
+                // $(".purchase").click(function () {
+                //     var productid = parseFloat($(this).attr("data-productid"));
+                //     $.ajax({
+                //         url: '/api/cart/purchase',
+                //         type: "POST",
+                //         dataType: "JSON",
+                //         data: { productid: productid },
+                //         success: function (response) {
+                //             window.location = 'checkout.html';
+                //             console.log(response); //log to the console to see whether it worked
+                //         },
+                //         error: function (error) {
+                //             alert("There was an error posting the data to the server: " + error.responseText);                                    
+                //         });
+                //     });
+
+
+                // });
+                // function loadHeaderCart() {
+                //     $("#headerCart").load("/AjaxContent/HeaderCart");
+                // }
+
+            });
+    </script>
+} *@

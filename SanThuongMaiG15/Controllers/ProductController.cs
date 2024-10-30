@@ -62,6 +62,8 @@ namespace SanThuongMaiG15.Controllers
            
             
         }
+
+
         [Route("{CatName}", Name = "ListProduct")]
         public IActionResult List(string CatName, int page=1)
         {

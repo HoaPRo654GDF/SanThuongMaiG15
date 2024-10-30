@@ -67,7 +67,7 @@ namespace SanThuongMaiG15
 
 
             services.AddDistributedMemoryCache();
-
+            services.AddHttpContextAccessor();
             services.AddSession();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 

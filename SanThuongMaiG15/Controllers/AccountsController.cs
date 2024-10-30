@@ -67,6 +67,9 @@ namespace SanThuongMaiG15.Controllers
 
             return RedirectToAction("Login");
         }
+
+
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
