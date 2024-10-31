@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.Web.CodeGeneration;
+using Newtonsoft.Json;
 using SanThuongMaiG15.Extension;
 using SanThuongMaiG15.Models;
 using SanThuongMaiG15.ModelViews;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,11 +17,12 @@ namespace SanThuongMaiG15.Controllers
     {
         private readonly EcC2CContext _context;
         public INotyfService _notifyService { get; }
-        public CartController(EcC2CContext context, INotyfService notifyService)
+        private readonly ILogger<CartController> _logger;
+        public CartController(EcC2CContext context, INotyfService notifyService, ILogger<CartController> logger)
         {
             _context = context;
             _notifyService = notifyService;
-
+            _logger = logger;
         }
 
         public List<CartItem> GioHang
@@ -43,36 +47,35 @@ namespace SanThuongMaiG15.Controllers
 
             return View(GioHang);
         }
+
+
         //[HttpPost]
         //[Route("api/cart/add")]
         //public IActionResult AddToCart(int productID, int? quantity)
         //{
         //    try
         //    {
-        //        List<CartItem> gioHang = GioHang;
+        //        List<CartItem> gioHang = HttpContext.Session.Get<List<CartItem>>("GioHang") ?? new List<CartItem>();
 
-        //        CartItem item = GioHang.SingleOrDefault(p => p.product.ProductId == productID);
+        //        CartItem item = gioHang.SingleOrDefault(p => p.product.ProductId == productID);
         //        if (item != null)
         //        {
-        //            if (quantity.HasValue)
-        //            {
-        //                item.quantity = quantity.Value;
-        //            }
-        //            else
-        //            {
-        //                item.quantity++;
-        //            }
+
+        //            item.quantity += quantity ?? 1;
         //        }
         //        else
         //        {
+
         //            Product gh = _context.Products.SingleOrDefault(p => p.ProductId == productID);
         //            item = new CartItem
         //            {
-        //                quantity = quantity.HasValue ? quantity.Value : 1,
+        //                quantity = quantity ?? 1,
         //                product = gh
         //            };
         //            gioHang.Add(item);
         //        }
+
+
         //        HttpContext.Session.Set<List<CartItem>>("GioHang", gioHang);
         //        return Json(new { success = true });
         //    }
@@ -87,35 +90,80 @@ namespace SanThuongMaiG15.Controllers
         {
             try
             {
+                // Log chi tiết thông tin đầu vào
+                _logger.LogInformation($"Thêm sản phẩm vào giỏ hàng. ProductID: {productID}, Quantity: {quantity}");
+
+                // Kiểm tra thông tin đầu vào
+                if (productID <= 0)
+                {
+                    _logger.LogWarning("Mã sản phẩm không hợp lệ");
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Mã sản phẩm không hợp lệ"
+                    });
+                }
+
+                // Lấy giỏ hàng từ session
                 List<CartItem> gioHang = HttpContext.Session.Get<List<CartItem>>("GioHang") ?? new List<CartItem>();
 
+                // Tìm sản phẩm trong giỏ hàng
                 CartItem item = gioHang.SingleOrDefault(p => p.product.ProductId == productID);
+
                 if (item != null)
                 {
-                    
-                    item.quantity += quantity ?? 1; 
+                    // Nếu sản phẩm đã có trong giỏ, tăng số lượng
+                    item.quantity += quantity ?? 1;
+                    _logger.LogInformation($"Cập nhật số lượng sản phẩm. Mã SP: {productID}, Số lượng mới: {item.quantity}");
                 }
                 else
                 {
-                    
+                    // Tìm sản phẩm trong database
                     Product gh = _context.Products.SingleOrDefault(p => p.ProductId == productID);
+
+                    if (gh == null)
+                    {
+                        _logger.LogWarning($"Không tìm thấy sản phẩm có ID: {productID}");
+                        return Json(new
+                        {
+                            success = false,
+                            message = "Sản phẩm không tồn tại"
+                        });
+                    }
+
+                    // Tạo mục mới trong giỏ hàng
                     item = new CartItem
                     {
-                        quantity = quantity ?? 1, 
+                        quantity = quantity ?? 1,
                         product = gh
                     };
                     gioHang.Add(item);
+                    _logger.LogInformation($"Thêm sản phẩm mới vào giỏ hàng. Mã SP: {productID}, Số lượng: {item.quantity}");
                 }
 
-            
+                // Lưu giỏ hàng vào session
                 HttpContext.Session.Set<List<CartItem>>("GioHang", gioHang);
-                return Json(new { success = true });
+
+                return Json(new
+                {
+                    success = true,
+                    message = "Thêm sản phẩm vào giỏ hàng thành công",
+                    cartItemCount = gioHang.Count
+                });
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { success = false });
+                // Ghi log lỗi chi tiết
+                _logger.LogError(ex, $"Lỗi khi thêm sản phẩm vào giỏ hàng. ProductID: {productID}");
+
+                return Json(new
+                {
+                    success = false,
+                    message = "Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng"
+                });
             }
         }
+
         [HttpPost]
         [Route("api/cart/update")]
         public IActionResult UpdateCart(int productID, int? quantity)
@@ -141,26 +189,116 @@ namespace SanThuongMaiG15.Controllers
         }
 
             [HttpPost]
-        [Route("api/cart/remove")]
-        public ActionResult Remove(int productID)
+        //[Route("api/cart/remove")]
+        //public ActionResult Remove(int productID)
+        //{
+        //    try 
+        //    {
+        //        List<CartItem> gioHang = GioHang;
+        //        CartItem item = gioHang.SingleOrDefault(p => p.product.ProductId == productID);
+        //        if (item != null)
+        //        {
+        //            gioHang.Remove(item);
+        //        }
+        //        HttpContext.Session.Set<List<CartItem>>("GioHang", gioHang);
+        //        return Json(new { success = true });
+        //    } 
+        //    catch 
+        //    {
+        //        return Json(new { success = false });
+        //    }
+        //}
+        [HttpPost]
+        public IActionResult RemoveFromCart([FromBody] RemoveCartItemRequest request)
         {
-            try 
+            try
             {
-                List<CartItem> gioHang = GioHang;
-                CartItem item = gioHang.SingleOrDefault(p => p.product.ProductId == productID);
-                if (item != null)
+                // Log chi tiết quá trình
+                _logger.LogInformation($"Bắt đầu xóa sản phẩm. ID: {request.ProductId}");
+
+                // Kiểm tra session
+                if (!HttpContext.Session.Keys.Contains("GioHang"))
                 {
-                    gioHang.Remove(item);
+                    _logger.LogWarning("Khóa 'Cart' không tồn tại trong session");
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Phiên làm việc đã hết hạn. Vui lòng tải lại trang.",
+                        errorCode = "SESSION_EXPIRED"
+                    });
                 }
-                HttpContext.Session.Set<List<CartItem>>("GioHang", gioHang);
-                return Json(new { success = true });
-            } 
-            catch 
+
+                // Lấy giỏ hàng từ session
+                var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
+
+                // Log trạng thái giỏ hàng
+                if (cart == null)
+                {
+                    _logger.LogWarning("Giỏ hàng null sau khi lấy từ session");
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Giỏ hàng không tồn tại.",
+                        errorCode = "CART_NULL"
+                    });
+                }
+
+                // Log chi tiết giỏ hàng
+                _logger.LogInformation($"Số lượng sản phẩm trong giỏ: {cart.Count}");
+                foreach (var item in cart)
+                {
+                    _logger.LogInformation($"Sản phẩm trong giỏ: ID = {item.product.ProductId}, Tên = {item.product.ProductName}");
+                }
+
+                // Tìm và xóa sản phẩm
+                var itemToRemove = cart.FirstOrDefault(x => x.product.ProductId == request.ProductId);
+
+                if (itemToRemove == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Sản phẩm không tồn tại trong giỏ hàng.",
+                        errorCode = "PRODUCT_NOT_FOUND",
+                        cartItemCount = cart.Count
+                    });
+                }
+
+                // Xóa sản phẩm
+                cart.Remove(itemToRemove);
+
+                // Lưu lại giỏ hàng
+                HttpContext.Session.Set("GioHang", cart);
+
+                _logger.LogInformation($"Đã xóa sản phẩm ID: {request.ProductId}. Số lượng sản phẩm còn lại: {cart.Count}");
+
+                return Json(new
+                {
+                    success = true,
+                    message = "Đã xóa sản phẩm khỏi giỏ hàng.",
+                    remainingItemCount = cart.Count
+                });
+            }
+            catch (Exception ex)
             {
-                return Json(new { success = false });
+                // Ghi log lỗi chi tiết
+                _logger.LogError(ex, $"Lỗi khi xóa sản phẩm: {ex.Message}");
+
+                return Json(new
+                {
+                    success = false,
+                    message = "Có lỗi xảy ra. Vui lòng thử lại.",
+                    errorCode = "UNEXPECTED_ERROR",
+                    errorDetails = ex.Message
+                });
             }
         }
-            
+
+        // Model request
+        public class RemoveCartItemRequest
+        {
+            public int ProductId { get; set; }
+        }
     }
 }
 

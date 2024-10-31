@@ -327,7 +327,7 @@
                                                     <div class="product-add-action">
                                                         <ul>
                                                             <li>
-                                                                <a href="cart.html">
+                                                                <a href="@url">
                                                                     <i class="pe-7s-cart"></i>
                                                                 </a>
                                                             </li> 
@@ -365,6 +365,59 @@
     </div>
 </main>
 <!-- Main Content Area End Here  -->
+@* @section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector(".add-to-cart").addEventListener("click", function () {
+                const productid = document.getElementById('ProductId').value;
+                const soLuong = parseInt(document.getElementById('txtsoluong').value) || 1;
+
+                if (!productid || soLuong <= 0) {
+                    alert("Vui lòng chọn sản phẩm và nhập số lượng hợp lệ.");
+                    return;
+                }
+
+                fetch('/api/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        productID: productid,
+                        quantity: soLuong
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            loadHeaderCart(); // Cập nhật giỏ hàng hiển thị
+                            location.reload();
+                        } else {
+                            alert("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.");
+                        }
+                    })
+                    .catch(error => {
+                        alert("Có lỗi xảy ra: " + error.message);
+                    });
+            });
+            function loadHeaderCart() {
+                fetch("/AjaxContent/HeaderCart")
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById("miniCart").innerHTML = html;
+                    });
+
+                fetch("/AjaxContent/NumberCart")
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById("numberCart").innerHTML = html;
+                    });
+            }
+        });
+    </script>
+}
+ *@
+
 @section Scripts {
     <script>
         $(document).ready(function () {
@@ -374,7 +427,7 @@
                 if (!productid || soLuong <= 0) {
                     alert("Vui lòng chọn sản phẩm và nhập số lượng hợp lệ.");
                     return;
-                }// Sửa lại ID đúng của input số lượng
+                }
                 $.ajax({
                     url: '/api/cart/add',
                     type: "POST",
@@ -386,6 +439,7 @@
                     success: function (response) {
                         if (response.success) {
                             loadHeaderCart(); // Cập nhật giỏ hàng hiển thị
+                            alert("Sản phẩm đã được thêm vào giỏ hàng.");
                             location.reload();
                         } else {
                             alert("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.");
@@ -398,47 +452,32 @@
             });
 
             function loadHeaderCart() {
-                $("#miniCart").load("/AjaxContent/HeaderCart");
-                $("#numberCart").load("/AjaxContent/NumberCart");
+                fetch("/AjaxContent/HeaderCart", {
+                    method: "GET",
+                    cache: "no-cache"
+                })
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById("miniCart").innerHTML = html;
+                    });
+
+                fetch("/AjaxContent/NumberCart", {
+                    method: "GET",
+                    cache: "no-cache"
+                })
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById("numberCart").innerHTML = html;
+                    });
             }
+
+            // function loadHeaderCart() {
+            //     $("#miniCart").load("/AjaxContent/HeaderCart");
+            //     $("#numberCart").load("/AjaxContent/NumberCart");
+            // }
         });
     </script>
 }
-@* @section Scripts {
-    <script>
-        $(document).ready(function () {
-            $(".add-to-cart").click(function () {
-                var productid = $('#ProductId').val();
-                var soLuong = $('#txtsoluong').val(); // Sửa lại ID đúng của input số lượng
-                $.ajax({
-                    url: '/api/cart/add',
-                    type: "POST",
-                    dataType: "JSON",
-                    data: {
-                        productID: productid,
-                        quantity: soLuong
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            loadHeaderCart();
-                            location.reload();
-                        } else {
-                            alert("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.");
-                        }
-                    },
-                    error: function (error) {
-                        alert("Có lỗi xảy ra: " + error.responseText);
-                    }
-                });
-            });
-
-            function loadHeaderCart() {
-                $("#miniCart").load("/AjaxContent/HeaderCart");
-                $("#numberCart").load("/AjaxContent/NumberCart");
-            }
-        });
-    </script>
-} *@
 
 @* @section Scripts{
     <script>

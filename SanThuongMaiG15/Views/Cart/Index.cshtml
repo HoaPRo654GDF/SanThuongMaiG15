@@ -48,9 +48,9 @@
                                         {
                                             foreach (var item in Model)
                                             {
-                                                <tr>
+                                                <tr data-product-id="@item.product.ProductId">
                                                     <td class="product_remove">
-                                                        <a href="javascript:void(0)">
+                                                        <a href="javascript:void(0)" class="remove-item" data-id="@item.product.ProductId">
                                                             <i class="pe-7s-close" title="Remove"></i>
                                                         </a>
                                                     </td>
@@ -63,7 +63,7 @@
                                                     <td class="product-price"><span class="amount">@item.product.Price.ToString("#,##0") VND</span></td>
                                                     <td class="quantity">
                                                         <div class="cart-plus-minus">
-                                                            <input class="cart-plus-minus-box" value="@item.quantity" type="text">
+                                                            <input class="cart-plus-minus-box" value="@item.quantity" type="number" min="1" data-id="@item.product.ProductId">
                                                         </div>
                                                     </td>
                                                     <td class="product-subtotal"><span class="amount">@item.TotalMoney.ToString("#,##0") VND</span></td>
@@ -75,15 +75,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="coupon-all">
-                                        <div class="coupon">
-                                            <input id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Coupon code" type="text">
-                                            <input class="button mt-xxs-30" name="apply_coupon" value="Apply coupon" type="submit">
-                                        </div>
-                                        <div class="coupon2">
-                                            <input class="button" name="update_cart" value="Update cart" type="submit">
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </div>
                             <div class="row">
@@ -91,7 +83,7 @@
                                     <div class="cart-page-total">
                                         <h2>Tổng đơn hàng</h2>
                                         <ul>
-                                            <li>Thành tiền <span>@Model.Sum(x => x.TotalMoney).ToString("#,##0") VND</span></li>
+                                            <li>Thành tiền <span id="totalAmount">@Model.Sum(x => x.TotalMoney).ToString("#,##0") VND</span></li>
                                         </ul>
                                         <a href="javascript:void(0)">Thanh toán</a>
                                     </div>
@@ -109,4 +101,115 @@
     </div>
 </main>
 <!-- Main Content Area End Here -->
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".product_remove .remove-item").forEach(button => {
+                button.addEventListener("click", function (event) {
+                    event.preventDefault();
 
+                    // Lấy ID từ attribute data-id
+                    const productId = this.getAttribute('data-id');
+                    const productRow = this.closest("tr");
+                  
+
+                    // Chi tiết log
+                    console.log("Raw Product ID:", productId);
+                    console.log("Parsed Product ID:", parseInt(productId));
+                    console.log("Product Row:", productRow);
+
+                    // Kiểm tra kỹ hơn
+                    if (!productId) {
+                        alert("Không thể xác định mã sản phẩm.");
+                        return;
+                    }
+
+                    const parsedProductId = parseInt(productId, 10);
+
+                    if (isNaN(parsedProductId) || parsedProductId <= 0) {
+                        alert("Mã sản phẩm không hợp lệ.");
+                        return;
+                    }
+
+                    if (!confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) return;
+                    // const productPrice = parseFloat(productRow.querySelector(".product-price .amount").innerText.replace(/[^0-9.-]+/g, ""));
+                    // const productQuantity = parseInt(productRow.querySelector(".cart-plus-minus-box").value);
+                    fetch("/Cart/RemoveFromCart", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ productId: parsedProductId })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Log toàn bộ response
+                            console.log("Full Server Response:", data);
+
+                            if (data.success) {
+                                productRow.remove();
+                                alert(data.message || "Sản phẩm đã được xóa khỏi giỏ hàng.");
+
+                                // updateTotalAmount(productPrice, productQuantity);
+
+                                // Gọi hàm loadHeaderCart để cập nhật giỏ hàng
+                                loadHeaderCart();
+                                // reload lại trang
+                                location.reload();
+                            } else {
+                                // Hiển thị thông báo chi tiết từ server
+                                alert(data.message || "Có lỗi xảy ra khi xóa sản phẩm.");
+                                console.error("Remove failed. Error details:", data);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Network or parsing error:", error);
+                            alert("Có lỗi kết nối. Vui lòng thử lại.");
+                        });
+                });
+            });
+        });
+
+        // function updateTotalAmount(productPrice, productQuantity) {
+        //     const totalAmountElement = document.getElementById("totalAmount");
+        //     let currentTotal = parseFloat(totalAmountElement.innerText.replace(/[^0-9.-]+/g, ""));
+
+        //     // Kiểm tra xem giá trị hiện tại có phải là số không
+        //     if (isNaN(currentTotal)) {
+        //         alert("Tổng tiền hiện tại không hợp lệ.");
+        //         return;
+        //     }
+
+        //     // Trừ đi giá trị của sản phẩm
+        //     const amountToSubtract = productPrice * productQuantity;
+
+        //     // Cập nhật tổng mới
+        //     currentTotal -= amountToSubtract;
+        //     console.log("Current Total:", currentTotal);
+        //     // Cập nhật thành tiền trên giao diện
+        //     totalAmountElement.innerText = currentTotal.toLocaleString('vi-VN') + ' VND';
+        // }
+
+        // Hàm để cập nhật header giỏ hàng
+        function loadHeaderCart() {
+            fetch("/AjaxContent/HeaderCart", {
+                method: "GET",
+                cache: "no-cache"
+            })
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById("miniCart").innerHTML = html;
+                });
+
+            fetch("/AjaxContent/NumberCart", {
+                method: "GET",
+                cache: "no-cache"
+            })
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById("numberCart").innerHTML = html;
+                });
+        }
+       
+    </script>
+}

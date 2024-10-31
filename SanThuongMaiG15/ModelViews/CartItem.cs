@@ -6,6 +6,6 @@ namespace SanThuongMaiG15.ModelViews
     {
         public Product product { get; set; }    
         public int quantity { get; set; }
-        public decimal TotalMoney => quantity * product.Price ;
+        public decimal TotalMoney => quantity * (product?.Price ?? 0); 
     }
 }

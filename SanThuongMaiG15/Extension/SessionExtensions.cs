@@ -7,21 +7,33 @@ namespace SanThuongMaiG15.Extension
 {
         public static class SessionExtensions
         {
-            public static void Set<T>(this ISession session, string key, T value)
-            {
+        // public static void Set<T>(this ISession session, string key, T value)
+        // {
 
-                session.SetString(key, JsonConvert.SerializeObject(value));
-            }
+        //     session.SetString(key, JsonConvert.SerializeObject(value));
+        // }
 
-           public static T Get<T>(this ISession session, string key)
-            {
-                var value = session.GetString(key);
+        //public static T Get<T>(this ISession session, string key)
+        // {
+        //     var value = session.GetString(key);
 
-                return value == null ? default(T) :
+        //     return value == null ? default(T) :
 
-                JsonConvert.DeserializeObject<T>(value);
+        //     JsonConvert.DeserializeObject<T>(value);
 
-            }
-
+        // }
+        public static void Set<T>(this ISession session, string key, T value)
+        {
+            session.SetString(key, JsonConvert.SerializeObject(value));
         }
+
+        public static T Get<T>(this ISession session, string key)
+        {
+            var value = session.GetString(key);
+            return value == null
+                ? default
+                : JsonConvert.DeserializeObject<T>(value);
+        }
+
+    }
 }

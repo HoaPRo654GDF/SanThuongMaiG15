@@ -42,7 +42,7 @@ namespace SanThuongMaiG15
                 builder.AddConsole(); 
                 builder.AddDebug(); 
             });
-            //Cấu hình session
+            services.AddDistributedMemoryCache(); // Sử dụng bộ nhớ đệm phân tán
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
