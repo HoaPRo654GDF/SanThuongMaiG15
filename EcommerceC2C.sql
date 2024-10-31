@@ -164,10 +164,13 @@ Go
 Select*From Products;
 Go
 UPDATE [dbo].[Products]
-SET [Thumb] = 'default.png'
-WHERE [Thumb] IS NULL;
+SET [Thumb] = 'default2.png'
+WHERE [Thumb] = 'default.png';
 Go
-
+UPDATE [dbo].[Products]
+SET [Thumb] = 'default.png'
+WHERE [Thumb] is null;
+Go
 
 ALTER TABLE [dbo].[Products] 
 ALTER COLUMN [ProductName] NVARCHAR(255) COLLATE Vietnamese_CI_AS;

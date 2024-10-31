@@ -4,5 +4,18 @@
     Layout = "~/Areas/Seller/Views/Shared/_SellerLayout.cshtml";
 }
 
-<h1>Index</h1>
+
+<h1>Xin chào, @await Component.InvokeAsync("NameUser")</h1>
+<p>Đây là trang chủ dành cho người bán.</p>
+
+<div>
+    <h2>Thông tin tài khoản</h2>
+    <ul>
+        <li><strong>Email:</strong> @User.Identity.Name</li>
+        <li><strong>Role:</strong> Người Bán</li>
+    </ul>
+</div>
+
+
+
 
