@@ -177,6 +177,10 @@ SET [Thumb] = 'default.png'
 WHERE [Thumb] is null;
 Go
 
+DELETE FROM Products;
+Go
+DBCC CHECKIDENT ('Products', RESEED, 0);
+Go
 INSERT INTO [dbo].[TransactStatus] (Status, Description)
 VALUES 
 ('Dang xu ly', 'Don hang dang trong qua trinh xu ly.'),
@@ -185,11 +189,17 @@ VALUES
 ('Cho xac nhan', 'Don hang dang cho xac nhan tu nguoi ban.'),
 ('Da hoan tat', 'Don hang da hoan tat va khong con yeu cau xu ly.');
 
+DELETE FROM [Orders];
+DELETE FROM [OrderDetails];
 
+Go
+DBCC CHECKIDENT ('Orders', RESEED, 0);
+DBCC CHECKIDENT ('OrderDetails', RESEED, 0);
+Go
 INSERT INTO [dbo].[Orders] (BuyerID, OrderDate, TransactStatusID, TotalMoney, Note, [Address], PaymentID)
 VALUES 
 (12, '2024-11-01', 1, 57, 'Giao hang nhanh', '123 Duong A, Quan 1', NULL),  -- 2 x 20 + 1 x 17 = 57
-(12, '2024-11-02', 1, 60, 'Ghi chu dac biet', '456 Duong B, Quan 2', NULL),  -- 3 x 20 = 60
+(12, '2024-11-02', 1, 96, 'Ghi chu dac biet', '456 Duong B, Quan 2', NULL),  -- 
 (12, '2024-11-03', 2, 14, 'De lai truoc cua', '789 Duong C, Quan 3', NULL),  -- 1 x 14 = 14
 (19, '2024-11-04', 2, 28, 'Kiem tra hang truoc khi nhan', '321 Duong D, Quan 4', NULL),  -- 2 x 14 = 28
 (19, '2024-11-05', 3, 80, 'Ghi chu them', '654 Duong E, Quan 5', NULL),  -- 5 x 16 = 80
@@ -204,7 +214,7 @@ INSERT INTO [dbo].[OrderDetails] (OrderID, ProductID, OrderNumber, Quantity, Tot
 VALUES 
 (1, 1, 1, 2, 40, '2024-11-01', 20),  -- Đơn hàng 1
 (1, 2, 2, 1, 17, '2024-11-01', 17),  -- Đơn hàng 1
-(2, 1, 1, 3, 20, '2024-11-02', 60),  -- Đơn hàng 2
+(2, 1, 1, 3, 60, '2024-11-02', 20),  -- Đơn hàng 2
 (2, 3, 2, 2, 36, '2024-11-02', 18),  -- Đơn hàng 2
 (3, 4, 1, 1, 14, '2024-11-03', 14),  -- Đơn hàng 3
 (4, 5, 1, 2, 28, '2024-11-04', 14),  -- Đơn hàng 4

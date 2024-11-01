@@ -1,0 +1,56 @@
+﻿@using SanThuongMaiG15.ModelViews
+@model IEnumerable<SanThuongMaiG15.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Danh sách đơn hàng</h1>
+
+<div class="table-responsive">
+    <table class="table table-hover e-commerce-table">
+        <thead>
+            <tr>
+                <th>Ngày đặt hàng</th>
+                <th>Tổng tiền</th>
+                <th>Ghi chú</th>
+                <th>Địa chỉ</th>
+                <th>Người mua</th>
+                <th>Trạng thái</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (@Model != null && Model.Count()>0)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.OrderDate
+                        </td>
+                        <td>
+                            @item.TotalMoney $
+                        </td>
+                        <td>@item.Note</td>
+                        <td>@item.Address</td>
+
+                        <td>@item.Buyer.Username</td>
+                        <td>
+                           @item.TransactStatus
+
+                        </td>
+                        <td>
+                            <a class="btn btn-primary m-r-5"  asp-action="Details" asp-route-id="@item.OrderId">Xem chi tiết</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <p>Chưa có đơn hàng</p>
+            }
+        </tbody>
+    </table>  
+</div>
