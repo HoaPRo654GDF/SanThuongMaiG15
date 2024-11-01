@@ -143,6 +143,7 @@ namespace SanThuongMaiG15.Controllers
 
                 // Lưu giỏ hàng vào session
                 HttpContext.Session.Set<List<CartItem>>("GioHang", gioHang);
+                
 
                 return Json(new
                 {
@@ -168,6 +169,7 @@ namespace SanThuongMaiG15.Controllers
         [Route("api/cart/update")]
         public IActionResult UpdateCart(int productID, int? quantity)
         {
+            //lấy giot hàng ra xử lý
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
             try
             {
@@ -295,10 +297,26 @@ namespace SanThuongMaiG15.Controllers
         }
 
         // Model request
-        public class RemoveCartItemRequest
+       
+        [HttpPost]
+        public IActionResult UpdateQuantity([FromBody] UpdateQuantityRequest request)
         {
-            public int ProductId { get; set; }
+            var cart = GioHang;
+            var cartItem = cart.FirstOrDefault(c => c.product.ProductId == request.ProductId);
+            if (cartItem != null)
+            {
+                // Cập nhật số lượng sản phẩm
+                cartItem.quantity = request.Quantity;
+
+                // Lưu lại giỏ hàng đã cập nhật vào session
+                HttpContext.Session.Set("Cart", cart);
+
+                return Json(new { success = true, message = "Cập nhật số lượng thành công" });
+            }
+
+            return Json(new { success = false, message = "Không tìm thấy sản phẩm trong giỏ hàng" });
         }
     }
 }
+
 

@@ -127,39 +127,39 @@ Go
 INSERT INTO [dbo].[Products] (ProductName, [Description], CatID, Price, Quantity, SellerID, DatePosted, ImageURL, ProductStatus) 
 VALUES 
 -- Thời Trang
-('Giay Nike Air Force 1', 'Giay the thao Nike, size 42, mau trang.', 1, 2200000, 3, 16, GETDATE(), 'https://example.com/nike-af1.jpg', 'Con hang'),
-('Ao Khoac Jean Unisex', 'Ao khoac jean thoi trang, size M.', 1, 700000, 5, 16, GETDATE(), 'https://example.com/jean-jacket.jpg', 'Con hang'),
-('Giay Converse Chuck Taylor', 'Giay Converse dang thoi trang, size 39, mau den.', 1, 1800000, 4, 16, GETDATE(), 'https://example.com/converse.jpg', 'Con hang'),
-('Quan Jeans Nam', 'Quan jeans nam, size L, mau xanh.', 1, 650000, 8, 16, GETDATE(), 'https://example.com/jeans.jpg', 'Con hang'),
+('Giay Nike Air Force 1', 'Giay the thao Nike, size 42, mau trang.', 1, 20, 3, 16, GETDATE(), 'https://example.com/nike-af1.jpg', 'Con hang'),
+('Ao Khoac Jean Unisex', 'Ao khoac jean thoi trang, size M.', 1, 17, 5, 16, GETDATE(), 'https://example.com/jean-jacket.jpg', 'Con hang'),
+('Giay Converse Chuck Taylor', 'Giay Converse dang thoi trang, size 39, mau den.', 1, 18, 4, 16, GETDATE(), 'https://example.com/converse.jpg', 'Con hang'),
+('Quan Jeans Nam', 'Quan jeans nam, size L, mau xanh.', 1, 14, 8, 16, GETDATE(), 'https://example.com/jeans.jpg', 'Con hang'),
 
 
 -- The Thao
-('Vot Tennis Wilson', 'Vot tennis Wilson chinh hang.', 2, 3500000, 2, 16, GETDATE(), 'https://example.com/tennis-racket.jpg', 'Con hang'),
-('Bong Da Adidas', 'Bong da Adidas, size 5.', 2, 500000, 10, 16, GETDATE(), 'https://example.com/adidas-ball.jpg', 'Con hang'),
-('Giay Chay Bo Nike', 'Giay chay bo Nike, size 40, mau xanh la.', 2, 2500000, 5, 16, GETDATE(), 'https://example.com/nike-running.jpg', 'Con hang'),
-('Kinh Da Bơi', 'Kinh da boi chong nuoc, mau xanh.', 2, 300000, 10, 16, GETDATE(), 'https://example.com/swim-goggles.jpg', 'Con hang'),
+('Vot Tennis Wilson', 'Vot tennis Wilson chinh hang.', 2, 14, 2, 16, GETDATE(), 'https://example.com/tennis-racket.jpg', 'Con hang'),
+('Bong Da Adidas', 'Bong da Adidas, size 5.', 2, 15, 10, 16, GETDATE(), 'https://example.com/adidas-ball.jpg', 'Con hang'),
+('Giay Chay Bo Nike', 'Giay chay bo Nike, size 40, mau xanh la.', 2, 16, 5, 16, GETDATE(), 'https://example.com/nike-running.jpg', 'Con hang'),
+('Kinh Da Bơi', 'Kinh da boi chong nuoc, mau xanh.', 2, 11, 10, 16, GETDATE(), 'https://example.com/swim-goggles.jpg', 'Con hang'),
 
 
 -- Cong Nghe
-('iPhone 14 Pro Max', 'iPhone 14 Pro Max moi 99%, bao hanh 12 thang.', 3, 28000000, 1, 16, GETDATE(), 'https://example.com/iphone14.jpg', 'Con hang'),
-('MacBook Pro 2021', 'MacBook Pro 16 inch, M1 Max, RAM 32GB.', 3, 60000000, 1, 16, GETDATE(), 'https://example.com/macbook-pro.jpg', 'Con hang'),
-('Tai Nghe Bluetooth Sony', 'Tai nghe Bluetooth Sony chinh hang, mau den.', 3, 2000000, 15, 16, GETDATE(), 'https://example.com/sony-headphones.jpg', 'Con hang'),
-('Tablet Samsung Galaxy Tab', 'Tablet Samsung Galaxy Tab, RAM 4GB, mau trang.', 3, 12000000, 3, 16, GETDATE(), 'https://example.com/samsung-tablet.jpg', 'Con hang'),
+('iPhone 14 Pro Max', 'iPhone 14 Pro Max moi 99%, bao hanh 12 thang.', 3, 1000, 1, 16, GETDATE(), 'https://example.com/iphone14.jpg', 'Con hang'),
+('MacBook Pro 2021', 'MacBook Pro 16 inch, M1 Max, RAM 32GB.', 3, 1500, 1, 16, GETDATE(), 'https://example.com/macbook-pro.jpg', 'Con hang'),
+('Tai Nghe Bluetooth Sony', 'Tai nghe Bluetooth Sony chinh hang, mau den.', 3, 2000, 15, 16, GETDATE(), 'https://example.com/sony-headphones.jpg', 'Con hang'),
+('Tablet Samsung Galaxy Tab', 'Tablet Samsung Galaxy Tab, RAM 4GB, mau trang.', 3, 1200, 3, 16, GETDATE(), 'https://example.com/samsung-tablet.jpg', 'Con hang'),
 
 
 -- Suc Khoe
-('Vien Uong Vitamin C 500mg', 'Tang cuong de khang va chong oxy hoa.', 4, 150000, 50, 16, GETDATE(), 'https://example.com/vitamin-c.jpg', 'Con hang'),
-('May Do Huyet Ap Omron', 'May do huyet ap tu dong, bao hanh 24 thang.', 4, 1200000, 10, 16, GETDATE(), 'https://example.com/blood-pressure.jpg', 'Con hang'),
-('Khau Trang Y Te 4 Lop', 'Hop 50 cai, khang khuan.', 4, 75000, 100, 16, GETDATE(), 'https://example.com/medical-mask.jpg', 'Con hang'),
-('Kem Chong Nang', 'Kem chong nang cho da, bao ve da, mau trang.', 4, 150000, 25, 16, GETDATE(), 'https://example.com/sunscreen.jpg', 'Con hang'),
-('Bong Banh Ngoai Troi', 'Bong banh ngoai troi, chong nuoc, mau xanh.', 4, 50000, 60, 16, GETDATE(), 'https://example.com/outdoor-ball.jpg', 'Con hang');
+('Vien Uong Vitamin C 500mg', 'Tang cuong de khang va chong oxy hoa.', 4, 4, 50, 16, GETDATE(), 'https://example.com/vitamin-c.jpg', 'Con hang'),
+('May Do Huyet Ap Omron', 'May do huyet ap tu dong, bao hanh 24 thang.', 4, 200, 10, 16, GETDATE(), 'https://example.com/blood-pressure.jpg', 'Con hang'),
+('Khau Trang Y Te 4 Lop', 'Hop 50 cai, khang khuan.', 4, 4, 100, 16, GETDATE(), 'https://example.com/medical-mask.jpg', 'Con hang'),
+('Kem Chong Nang', 'Kem chong nang cho da, bao ve da, mau trang.', 4, 6, 25, 16, GETDATE(), 'https://example.com/sunscreen.jpg', 'Con hang'),
+('Bong Banh Ngoai Troi', 'Bong banh ngoai troi, chong nuoc, mau xanh.', 4, 7, 60, 16, GETDATE(), 'https://example.com/outdoor-ball.jpg', 'Con hang');
 GO
 
 Go
 INSERT INTO [dbo].[Products] (ProductName, [Description], CatID, Price, Quantity, SellerID, DatePosted, ImageURL, ProductStatus) 
 VALUES 
 -- Thời Trang
-('Giày bánh bao Fukau 5', 'Giay thể thao Fukau size 41, màu trắng.', 1, 2200000, 3, 15, GETDATE(), 'https://example.com/nike-af1.jpg', 'Con hang');
+('Giày bánh bao Fukau 5', 'Giay thể thao Fukau size 41, màu trắng.', 1, 4, 3, 15, GETDATE(), 'https://example.com/nike-af1.jpg', 'Con hang');
 Go
 Select*From Products;
 Go

@@ -60,13 +60,13 @@
                                                         </a>
                                                     </td>
                                                     <td class="product-name"><a href="javascript:void(0)">@item.product.ProductName</a></td>
-                                                    <td class="product-price"><span class="amount">@item.product.Price.ToString("#,##0") VND</span></td>
+                                                    <td class="product-price"><span class="amount">@item.product.Price $</span></td>
                                                     <td class="quantity">
                                                         <div class="cart-plus-minus">
-                                                            <input class="cart-plus-minus-box" value="@item.quantity" type="number" min="1" data-id="@item.product.ProductId">
+                                                            <input data-mahh="@item.product.ProductId" data-id="@item.product.ProductId" data-dongia="@item.product.Price" class="cartItem cart-plus-minus-box" value="@item.quantity" type="number" min="1">
                                                         </div>
                                                     </td>
-                                                    <td class="product-subtotal"><span class="amount">@item.TotalMoney.ToString("#,##0") VND</span></td>
+                                                    <td class="product-subtotal"><span class="amount">@item.TotalMoney $</span></td>
                                                 </tr>
                                             }
                                         }
@@ -83,7 +83,7 @@
                                     <div class="cart-page-total">
                                         <h2>Tổng đơn hàng</h2>
                                         <ul>
-                                            <li>Thành tiền <span id="totalAmount">@Model.Sum(x => x.TotalMoney).ToString("#,##0") VND</span></li>
+                                            <li>Thành tiền <span id="totalAmount">@Model.Sum(x => x.TotalMoney) $</span></li>
                                         </ul>
                                         <a href="javascript:void(0)">Thanh toán</a>
                                     </div>
@@ -132,8 +132,8 @@
                     }
 
                     if (!confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) return;
-                    // const productPrice = parseFloat(productRow.querySelector(".product-price .amount").innerText.replace(/[^0-9.-]+/g, ""));
-                    // const productQuantity = parseInt(productRow.querySelector(".cart-plus-minus-box").value);
+                    const productPrice = parseFloat(productRow.querySelector(".product-price .amount").innerText.replace(/[^0-9.-]+/g, ""));
+                    const productQuantity = parseInt(productRow.querySelector(".cart-plus-minus-box").value);
                     fetch("/Cart/RemoveFromCart", {
                         method: "POST",
                         headers: {
@@ -150,12 +150,12 @@
                                 productRow.remove();
                                 alert(data.message || "Sản phẩm đã được xóa khỏi giỏ hàng.");
 
-                                // updateTotalAmount(productPrice, productQuantity);
+                                updateTotalAmount(productPrice, productQuantity);
 
                                 // Gọi hàm loadHeaderCart để cập nhật giỏ hàng
                                 loadHeaderCart();
                                 // reload lại trang
-                                location.reload();
+                                // location.reload();
                             } else {
                                 // Hiển thị thông báo chi tiết từ server
                                 alert(data.message || "Có lỗi xảy ra khi xóa sản phẩm.");
@@ -167,30 +167,94 @@
                             alert("Có lỗi kết nối. Vui lòng thử lại.");
                         });
                 });
+
             });
         });
 
-        // function updateTotalAmount(productPrice, productQuantity) {
-        //     const totalAmountElement = document.getElementById("totalAmount");
-        //     let currentTotal = parseFloat(totalAmountElement.innerText.replace(/[^0-9.-]+/g, ""));
 
-        //     // Kiểm tra xem giá trị hiện tại có phải là số không
-        //     if (isNaN(currentTotal)) {
-        //         alert("Tổng tiền hiện tại không hợp lệ.");
-        //         return;
-        //     }
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".cart-plus-minus-box").forEach(input => {
+                input.addEventListener("input", function () {
+                    const productId = this.getAttribute("data-id");
+                    const newQuantity = parseInt(this.value);
+                    const productRow = this.closest("tr");
+                    const productPrice = parseFloat(productRow.querySelector(".product-price .amount").innerText.replace(/[^0-9.-]+/g, ""));
 
-        //     // Trừ đi giá trị của sản phẩm
-        //     const amountToSubtract = productPrice * productQuantity;
+                    if (isNaN(newQuantity) || newQuantity <= 0) {
+                        alert("Số lượng không hợp lệ. Vui lòng nhập số lượng lớn hơn 0.");
+                        return;
+                    }
 
-        //     // Cập nhật tổng mới
-        //     currentTotal -= amountToSubtract;
-        //     console.log("Current Total:", currentTotal);
-        //     // Cập nhật thành tiền trên giao diện
-        //     totalAmountElement.innerText = currentTotal.toLocaleString('vi-VN') + ' VND';
-        // }
+                    // Gửi yêu cầu cập nhật số lượng lên server nếu cần thiết
+                    fetch("/Cart/UpdateQuantity", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ productId: parseInt(productId), quantity: newQuantity })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Tính thành tiền mới cho sản phẩm
+                                const newTotalMoney = productPrice * newQuantity;
+                                productRow.querySelector(".product-subtotal .amount").innerText = newTotalMoney.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
-        // Hàm để cập nhật header giỏ hàng
+                                // Cập nhật lại tổng tiền của giỏ hàng
+                                updateTotalQuantity();
+                                // location.reload();
+                            } else {
+                                alert(data.message || "Có lỗi xảy ra khi cập nhật số lượng.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Lỗi kết nối:", error);
+                            alert("Có lỗi xảy ra, vui lòng thử lại.");
+                        });
+                });
+            });
+        });
+
+        function updateTotalQuantity() {
+            const totalAmountElement = document.getElementById("totalAmount");
+            let newTotal = 0;
+
+            // Tính tổng tất cả sản phẩm trong giỏ hàng
+            document.querySelectorAll(".product-subtotal .amount").forEach(amountElement => {
+                const productTotal = parseFloat(amountElement.innerText.replace(/[^0-9.-]+/g, ""));
+                if (!isNaN(productTotal)) {
+                    newTotal += productTotal;
+                }
+            });
+
+            // Cập nhật tổng tiền trên giao diện
+            totalAmountElement.innerText = newTotal.toLocaleString('en-US') + "$";
+        }
+
+
+        function updateTotalAmount(productPrice, productQuantity) {
+            const totalAmountElement = document.getElementById("totalAmount");
+            let currentTotal = parseFloat(totalAmountElement.innerText.replace(/[^0-9.-]+/g, ""));
+
+            // Kiểm tra xem giá trị hiện tại có phải là số không
+            if (isNaN(currentTotal)) {
+                alert("Tổng tiền hiện tại không hợp lệ.");
+                return;
+            }
+
+            // Trừ đi giá trị của sản phẩm
+            const amountToSubtract = productPrice * productQuantity;
+
+            // Cập nhật tổng mới
+            currentTotal -= amountToSubtract;
+            console.log("Current Total:", currentTotal);
+            // Cập nhật thành tiền trên giao diện
+            totalAmountElement.innerText = currentTotal.toLocaleString('en-US') + "$";
+        }
+
+       
+
+        //Hàm để cập nhật header giỏ hàng
         function loadHeaderCart() {
             fetch("/AjaxContent/HeaderCart", {
                 method: "GET",
@@ -210,6 +274,7 @@
                     document.getElementById("numberCart").innerHTML = html;
                 });
         }
+        
        
     </script>
 }

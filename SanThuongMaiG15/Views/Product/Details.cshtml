@@ -64,7 +64,7 @@
                             <div class="single-product-content">
                                 <h2 class="title">@Model.ProductName</h2>
                                 <div class="price-box pb-1">
-                                    <span class="new-price text-danger">@Model.Price.ToString("#,##0") VND</span>
+                                    <span class="new-price text-danger">@Model.Price $</span>
                                     @* <span class="old-price text-primary"></span> *@
                                 </div>
                                 <div class="rating-box-wrap pb-7">
@@ -337,7 +337,7 @@
                                                 <div class="product-content texx">
                                                     <a class="product-name" href="@url">@item.ProductName</a>
                                                     <div class="price-box pb-1">
-                                                        <span class="new-price">@item.Price.ToString("#,##0") VND</span>
+                                                        <span class="new-price">@item.Price $</span>
                                                     </div>
                                                     <div class="rating-box">
                                                         <ul>
@@ -436,10 +436,10 @@
                         productID: productid,
                         quantity: soLuong
                     },
+
                     success: function (response) {
                         if (response.success) {
                             loadHeaderCart(); // Cập nhật giỏ hàng hiển thị
-                            alert("Sản phẩm đã được thêm vào giỏ hàng.");
                             location.reload();
                         } else {
                             alert("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.");
