@@ -1,0 +1,164 @@
+﻿@model SanThuongMaiG15.ModelViews.MuaHangVM
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<SanThuongMaiG15.ModelViews.CartItem> Carts = ViewBag.GioHang;
+}
+<!-- Begin Main Content Area -->
+<main class="main-content">
+    <div class="breadcrumb-area breadcrumb-height" data-bg-image="assets/images/breadcrumb/bg/b1.png">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-item">
+                        <h2 class="breadcrumb-heading">Thanh toán</h2>
+                        <ul>
+                            <li>
+                                <a href="index.html">Home <i class="pe-7s-angle-right"></i></a>
+                            </li>
+                            <li>Thanh toán</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="checkout-area section-space-y-axis-100">
+        <div class="container">
+            <div class="row">
+               
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-12">
+                    <form asp-controller="Checkout"asp-action="Index" method="post">
+                        <div class="checkbox-form">
+                            <h3>Thông tin thanh toán</h3>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="checkout-form-list">
+                                        <label>Họ và tên<span class="required">*</span></label>
+                                        <input asp-for="Username" placeholder="Họ và tên" type="text">
+                                    </div>
+                                </div>
+                               
+                                <div class="col-md-12">
+                                    <div class="checkout-form-list">
+                                        <label>Số điện thoại<span class="required">*</span></label>
+                                        <input asp-for="PhoneNumber" placeholder="Số điện thoại" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="checkout-form-list">
+                                        <label>Địa chỉ nhận hàng<span class="required">*</span></label>
+                                        <input asp-for="Address" placeholder="Địa chỉ nhận hàng" type="text">
+                                    </div>
+                                </div>    
+                            </div>    
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="your-order">
+                        <h3>Thông tin đặt hàng</h3>
+                        <div class="your-order-table table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="cart-product-name">Sản phẩm</th>
+                                        <th class="cart-product-name">Số lượng</th>
+                                        <th class="cart-product-total">Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  @if(Carts != null)
+                                    {
+                                        foreach (var item in Carts)
+                                        {
+                                            <tr class="cart_item">
+                                                <td class="cart-product-name">
+                                                    @item.product.ProductName                                            
+                                                </td>
+                                                <td class="product-quantitye">                                       
+                                                        @item.quantity
+                                                </td>
+                                                <td class="cart-product-total"><span class="amount">@item.TotalMoney $</span></td>
+                                            </tr>
+                                        }
+                                    }
+                                   
+                                </tbody>
+                                <tfoot>
+                                    <tr class="order-total">
+                                        <th>Tổng tiền </th>
+                                        <td><strong><span class="amount">@Carts.Sum(x => x.TotalMoney) $</span></strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="payment-method">
+                            <div class="payment-accordion">
+                                <div id="accordion">
+                                    <div class="card">
+                                        <div class="card-header" id="#payment-1">
+                                            <h5 class="panel-title">
+                                                <a href="javascript:void(0)" class="" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true">
+                                                    Thanh toán khi nhận hàng (COD)
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+                                            <div class="card-body">
+                                                <p>
+                                                   Khách hàng thanh toán cho shipper khi nhận được hàng
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" id="#payment-2">
+                                            <h5 class="panel-title">
+                                                <a href="javascript:void(0)" class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false">
+                                                    BANK
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+                                            <div class="card-body">
+                                                <p>
+                                                    Khách hàng thanh toán qua ngân hàng, hàng sẽ ship về tận nơi cho khách hàng
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" id="#payment-3">
+                                            <h5 class="panel-title">
+                                                <a href="javascript:void(0)" class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false">
+                                                    MOMO
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+                                            <div class="card-body">
+                                                <p>
+                                                    Khách hàng thanh toán qua MoMo, hàng sẽ ship về tận nơi cho khách hàng
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form asp-controller="Checkout" asp-action="Success" method="post">
+                                    <div class="order-button-payment">
+                                        <input value="Đặt Hàng" type="submit" class="btn btn-primary">
+                                    </div>
+                                </form>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Main Content Area End Here -->

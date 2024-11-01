@@ -181,9 +181,9 @@ namespace SanThuongMaiG15.Controllers
             }
 
             // Lưu thông tin người dùng vào Session
-            HttpContext.Session.SetInt32("UserID", khachhang.UserId);
-            HttpContext.Session.SetString("UserName", khachhang.Email);
-            HttpContext.Session.SetInt32("RoleID", khachhang.RoleId);
+            HttpContext.Session.SetString("UserId", khachhang.UserId.ToString());
+            HttpContext.Session.SetString("UserName", khachhang.Username.ToString());
+            HttpContext.Session.SetString("RoleID", khachhang.RoleId.ToString());
 
             // Tạo Claims và đăng nhập người dùng
             var claims = new List<Claim>
@@ -200,7 +200,7 @@ namespace SanThuongMaiG15.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
             _notifyService.Success("Đăng nhập thành công!");
-            _logger.LogInformation($"Email: {khachhang.Email}, UserID: {khachhang.UserId}, RoleID: {khachhang.RoleId}");
+            _logger.LogInformation($"Email: {khachhang.Email}, UserId: {khachhang.UserId}, RoleID: {khachhang.RoleId}");
 
             //Nếu có returnUrl hợp lệ, chuyển đến đó
             if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))

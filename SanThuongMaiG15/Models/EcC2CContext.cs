@@ -30,18 +30,18 @@ namespace SanThuongMaiG15.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DELL; Database=EcC2C ; Integrated Security=true ; ").EnableSensitiveDataLogging();
+                optionsBuilder.UseSqlServer("Server=DELL; Database=EcC2C ; Integrated Security=true ; ");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+            modelBuilder.HasAnnotation("Relational:Collation", "Vietnamese_CI_AS");
 
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(e => e.CatId)
-                    .HasName("PK__Categori__6A1C8ADABB85873F");
+                    .HasName("PK__Categori__6A1C8ADA22C9AE77");
 
                 entity.Property(e => e.CatId).HasColumnName("CatID");
 
@@ -58,7 +58,7 @@ namespace SanThuongMaiG15.Models
 
                 entity.Property(e => e.OrderDate).HasColumnType("datetime");
 
-                entity.Property(e => e.TotalMoney).HasColumnType("decimal(18, 2)");
+                entity.Property(e => e.PaymentId).HasColumnName("PaymentID");
 
                 entity.Property(e => e.TransactStatusId).HasColumnName("TransactStatusID");
 
@@ -70,7 +70,6 @@ namespace SanThuongMaiG15.Models
                 entity.HasOne(d => d.TransactStatus)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.TransactStatusId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Orders_TransactStatus");
             });
 
@@ -82,22 +81,16 @@ namespace SanThuongMaiG15.Models
 
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
-                entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
-
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
-
-                entity.Property(e => e.TotalMoney).HasColumnType("decimal(18, 2)");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.OrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OrderDetail_Order");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OrderDetail_Product");
             });
 
@@ -112,8 +105,6 @@ namespace SanThuongMaiG15.Models
                 entity.Property(e => e.ImageUrl)
                     .HasMaxLength(500)
                     .HasColumnName("ImageURL");
-
-                entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.ProductName)
                     .IsRequired()
@@ -141,11 +132,14 @@ namespace SanThuongMaiG15.Models
             {
                 entity.Property(e => e.RoleId).HasColumnName("RoleID");
 
-                entity.Property(e => e.Description).HasMaxLength(255);
+                entity.Property(e => e.Description)
+                    .HasMaxLength(255)
+                    .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                 entity.Property(e => e.RoleName)
                     .IsRequired()
-                    .HasMaxLength(50);
+                    .HasMaxLength(50)
+                    .UseCollation("SQL_Latin1_General_CP1_CI_AS");
             });
 
             modelBuilder.Entity<TransactStatus>(entity =>
@@ -154,9 +148,12 @@ namespace SanThuongMaiG15.Models
 
                 entity.Property(e => e.TransactStatusId).HasColumnName("TransactStatusID");
 
+                entity.Property(e => e.Description).UseCollation("SQL_Latin1_General_CP1_CI_AS");
+
                 entity.Property(e => e.Status)
                     .IsRequired()
-                    .HasMaxLength(50);
+                    .HasMaxLength(50)
+                    .UseCollation("SQL_Latin1_General_CP1_CI_AS");
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -178,23 +175,27 @@ namespace SanThuongMaiG15.Models
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasMaxLength(255)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                 entity.Property(e => e.PhoneNumber)
                     .HasMaxLength(30)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                 entity.Property(e => e.RoleId).HasColumnName("RoleID");
 
                 entity.Property(e => e.Username)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)

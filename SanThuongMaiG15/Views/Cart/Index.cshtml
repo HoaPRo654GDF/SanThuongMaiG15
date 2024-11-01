@@ -7,7 +7,7 @@
 
 <!-- Begin Main Content Area -->
 <main class="main-content">
-    <div class="breadcrumb-area breadcrumb-height" data-bg-image="assets/images/breadcrumb/bg/1-1-1920x373.jpg">
+    <div class="breadcrumb-area breadcrumb-height" data-bg-image="assets/images/breadcrumb/bg/b1.png">
         <div class="container h-100">
             <div class="row h-100">
                 <div class="col-lg-12">
@@ -85,7 +85,14 @@
                                         <ul>
                                             <li>Thành tiền <span id="totalAmount">@Model.Sum(x => x.TotalMoney) $</span></li>
                                         </ul>
-                                        <a href="javascript:void(0)">Thanh toán</a>
+                                        @if(User.Identity.IsAuthenticated)
+                                        {
+                                            <a href="/checkout.html" class="btn btn-secondary btn-primary-hover" >Thanh toán</a>
+                                        }else
+                                        {
+                                            <a href="/dang-nhap.html?returnUr/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
+                                        }
+                                        
                                     </div>
                                 </div>
                             </div>

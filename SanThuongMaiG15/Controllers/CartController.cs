@@ -1,5 +1,4 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.Web.CodeGeneration;
@@ -210,6 +209,7 @@ namespace SanThuongMaiG15.Controllers
         //        return Json(new { success = false });
         //    }
         //}
+
         [HttpPost]
         public IActionResult RemoveFromCart([FromBody] RemoveCartItemRequest request)
         {
@@ -296,7 +296,7 @@ namespace SanThuongMaiG15.Controllers
             }
         }
 
-        // Model request
+
        
         [HttpPost]
         public IActionResult UpdateQuantity([FromBody] UpdateQuantityRequest request)
@@ -309,7 +309,7 @@ namespace SanThuongMaiG15.Controllers
                 cartItem.quantity = request.Quantity;
 
                 // Lưu lại giỏ hàng đã cập nhật vào session
-                HttpContext.Session.Set("Cart", cart);
+                HttpContext.Session.Set("GioHang", cart);
 
                 return Json(new { success = true, message = "Cập nhật số lượng thành công" });
             }

@@ -35,7 +35,7 @@ CREATE TABLE [dbo].[Products] (
     [ProductName] NVARCHAR(255) NOT NULL, -- Tên sản phẩm
     [Description] NVARCHAR(MAX), -- Mô tả sản phẩm
     [CatID] INT NOT NULL, -- Mã danh mục
-    [Price] DECIMAL(18, 2) NOT NULL, -- Giá sản phẩm
+    [Price] Float NOT NULL, -- Giá sản phẩm
     [Quantity] INT NOT NULL, -- Số lượng
     [SellerID] INT, -- Mã người bán
     [DatePosted] DATETIME  , -- Ngày đăng
@@ -53,22 +53,27 @@ CREATE TABLE [dbo].[Orders](
 	[OrderID] INT PRIMARY KEY IDENTITY(1,1) NOT NULL, -- Mã đơn hàng
     [BuyerID] INT, -- Mã người mua                                                            
     [OrderDate] DATETIME , -- Ngày đặt hàng
-    [TransactStatusID] INT NOT NULL, -- Mã trạng thái đơn hàng
-    [TotalMoney] DECIMAL(18,2) NOT NULL, -- Tổng tiền     
+    [TransactStatusID] INT  NULL, -- Mã trạng thái đơn hàng
+    [TotalMoney] Float  NULL, -- Tổng tiền     
     [Note] NVARCHAR(MAX), -- Ghi chú
     [Address] NVARCHAR(MAX), -- Địa chỉ giao hàng
 )
+
+ALTER TABLE [dbo].[Orders]
+ADD [PaymentID] [int] NULL; 
+Go
+
 Go
 -- Bảng Chi Tiết Đơn Hàng (OrderDetails)
 CREATE TABLE [dbo].[OrderDetails](
 	[OrderDetailID] INT PRIMARY KEY IDENTITY(1,1) NOT NULL, -- Mã chi tiết đơn hàng
-    [OrderID] INT NOT NULL, -- Mã đơn hàng
-    [ProductID] INT NOT NULL, -- Mã sản phẩm
-    [OrderNumber] INT NOT NULL, -- Số thứ tự đơn hàng
-    [Quantity] INT NOT NULL, -- Số lượng
-    [TotalMoney] DECIMAL(18,2) NOT NULL, -- Tổng tiền
+    [OrderID] INT NULL, -- Mã đơn hàng
+    [ProductID] INT  NULL, -- Mã sản phẩm
+    [OrderNumber] INT  NULL, -- Số thứ tự đơn hàng
+    [Quantity] INT  NULL, -- Số lượng
+    [TotalMoney] Float  NULL, -- Tổng tiền
     [CreateDate] DATETIME , -- Ngày tạo
-    [Price] DECIMAL(18,2) NOT NULL -- Giá bán
+    [Price] Float  NULL -- Giá bán
 )
 -- Bảng Trạng Thái Giao Dịch (TransactStatus)
 CREATE TABLE [dbo].[TransactStatus](
@@ -171,6 +176,42 @@ UPDATE [dbo].[Products]
 SET [Thumb] = 'default.png'
 WHERE [Thumb] is null;
 Go
+
+INSERT INTO [dbo].[TransactStatus] (Status, Description)
+VALUES 
+('Dang xu ly', 'Don hang dang trong qua trinh xu ly.'),
+('Da giao', 'Don hang da duoc giao cho nguoi mua.'),
+('Da huy', 'Don hang da bi huy boi nguoi mua hoac nguoi ban.'),
+('Cho xac nhan', 'Don hang dang cho xac nhan tu nguoi ban.'),
+('Da hoan tat', 'Don hang da hoan tat va khong con yeu cau xu ly.');
+
+
+INSERT INTO [dbo].[Orders] (BuyerID, OrderDate, TransactStatusID, TotalMoney, Note, [Address], PaymentID)
+VALUES 
+(12, '2024-11-01', 1, 57, 'Giao hang nhanh', '123 Duong A, Quan 1', NULL),  -- 2 x 20 + 1 x 17 = 57
+(12, '2024-11-02', 1, 60, 'Ghi chu dac biet', '456 Duong B, Quan 2', NULL),  -- 3 x 20 = 60
+(12, '2024-11-03', 2, 14, 'De lai truoc cua', '789 Duong C, Quan 3', NULL),  -- 1 x 14 = 14
+(19, '2024-11-04', 2, 28, 'Kiem tra hang truoc khi nhan', '321 Duong D, Quan 4', NULL),  -- 2 x 14 = 28
+(19, '2024-11-05', 3, 80, 'Ghi chu them', '654 Duong E, Quan 5', NULL),  -- 5 x 16 = 80
+(19, '2024-11-06', 3, 11, 'Giao hang vao buoi chieu', '987 Duong F, Quan 6', NULL),  -- 1 x 11 = 11
+(20, '2024-11-07', 4, 1000, 'Khach hang VIP', '159 Duong G, Quan 7', NULL),  -- 3 x 1000 = 3000
+(20, '2024-11-08', 4, 11, 'Ghi chu khong can thiet', '753 Duong H, Quan 8', NULL),  -- 1 x 11 = 11
+(20, '2024-11-09', 5, 80, 'Giao hang vao cuoi tuan', '246 Duong I, Quan 9', NULL),  -- 5 x 16 = 80
+(20, '2024-11-10', 5, 16, 'Dat hang tu som', '369 Duong J, Quan 10', NULL);  -- 1 x 16 = 16
+
+
+INSERT INTO [dbo].[OrderDetails] (OrderID, ProductID, OrderNumber, Quantity, TotalMoney, CreateDate, Price)
+VALUES 
+(1, 1, 1, 2, 40, '2024-11-01', 20),  -- Đơn hàng 1
+(1, 2, 2, 1, 17, '2024-11-01', 17),  -- Đơn hàng 1
+(2, 1, 1, 3, 20, '2024-11-02', 60),  -- Đơn hàng 2
+(2, 3, 2, 2, 36, '2024-11-02', 18),  -- Đơn hàng 2
+(3, 4, 1, 1, 14, '2024-11-03', 14),  -- Đơn hàng 3
+(4, 5, 1, 2, 28, '2024-11-04', 14),  -- Đơn hàng 4
+(4, 6, 2, 1, 15, '2024-11-04', 15),  -- Đơn hàng 4
+(5, 7, 1, 5, 80, '2024-11-05', 16), -- Đơn hàng 5
+(6, 8, 1, 1, 11, '2024-11-06', 11),  -- Đơn hàng 6
+(7, 9, 1, 3, 3000, '2024-11-07', 1000);   -- Đơn hàng 7
 
 ALTER TABLE [dbo].[Products] 
 ALTER COLUMN [ProductName] NVARCHAR(255) COLLATE Vietnamese_CI_AS;
