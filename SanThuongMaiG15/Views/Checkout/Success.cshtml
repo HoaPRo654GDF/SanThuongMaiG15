@@ -2,93 +2,23 @@
 @{
     ViewData["Title"] = "Success";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    List<SanThuongMaiG15.ModelViews.CartItem> Carts = ViewBag.GioHang;
 }
 
-<h2>Đặt Hàng Thành Công</h2>
+<h2 style="color: #4CAF50;">Đặt Hàng Thành Công</h2>
 
-<div class="success-message">
-    <h3>Cảm ơn bạn, @Model.Username!</h3>
+<div style="padding: 20px; border: 1px solid #4CAF50; border-radius: 5px; background-color: #f9f9f9; color: #333; max-width: 600px; margin: 20px auto;">
+    <h3 style="color: #4CAF50;">Cảm ơn bạn, @Model.Username!</h3>
     <p>Đơn hàng của bạn đã được đặt thành công.</p>
 
-    <h4>Thông tin đơn hàng:</h4>
-    <ul>
-        <li><strong>Mã đơn hàng:</strong> @Model.OrderId</li>
-        <li><strong>Người đặt hàng:</strong> @Model.Username</li>
-        <li><strong>Điện thoại:</strong> @Model.PhoneNumber</li>
-        <li><strong>Địa chỉ giao hàng:</strong> @Model.Address</li>
+    <h4 style="color: #4CAF50;">Thông tin người mua hàng:</h4>
+    <ul style="list-style-type: none; padding: 0;">
+        <li style="margin: 5px 0;"><strong>Mã đơn hàng:</strong> @Model.OrderId</li>
+        <li style="margin: 5px 0;"><strong>Người đặt hàng:</strong> @Model.Username</li>
+        <li style="margin: 5px 0;"><strong>Điện thoại:</strong> @Model.PhoneNumber</li>
+        <li style="margin: 5px 0;"><strong>Địa chỉ giao hàng:</strong> @Model.Address</li>
+        <li style="margin: 5px 0;"><strong>Ghi chú:</strong> @Model.Note</li>
     </ul>
 
-    <h4>Danh sách sản phẩm đã đặt:</h4>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Tên sản phẩm</th>
-                <th>Số lượng</th>
-                <th>Thành tiền</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Carts != null )
-            {
-                foreach (var item in Carts)
-                {
-                    <tr>
-                        <td>@item.product.ProductName</td>
-                        <td>@item.quantity</td>
-                        <td>@item.TotalMoney $</td>
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="3">Không có sản phẩm nào.</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
     <p>Chúng tôi sẽ liên hệ với bạn qua số điện thoại trên để xác nhận đơn hàng.</p>
-    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Quay lại trang chủ</a>
+    <a href="/xem-don-hang.html" style="margin-top: 20px; display: inline-block; background-color: #4CAF50; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">Xem đơn hàng</a>
 </div>
-
-<style>
-    .success-message {
-        padding: 20px;
-        border: 1px solid #4CAF50;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-        color: #333;
-        max-width: 600px;
-        margin: 20px auto;
-    }
-
-    h2, h3, h4 {
-        color: #4CAF50;
-    }
-
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    li {
-        margin: 5px 0;
-    }
-
-    .btn {
-        margin-top: 20px;
-        display: inline-block;
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 15px;
-        text-decoration: none;
-        border-radius: 5px;
-    }
-
-        .btn:hover {
-            background-color: #45a049;
-        }
-</style>
-

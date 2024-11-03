@@ -201,16 +201,23 @@ namespace SanThuongMaiG15.Controllers
                     var result = _context.SaveChanges();
                     Console.WriteLine($"SaveChanges result: {result}");
                     Console.WriteLine($"Created OrderId: {donhang.OrderId}");
+                 
                     if (result > 0)
                     {
                         // Tạo chi tiết đơn hàng
                         foreach (var item in cart)
                         {
+                            int maxOrderNumber = (int)_context.OrderDetails
+                                .Where(od => od.ProductId == item.product.ProductId)
+                                .OrderByDescending(od => od.OrderNumber)
+                                .Select(od => od.OrderNumber)
+                                .FirstOrDefault();
+
                             OrderDetail orderDetail = new OrderDetail
                             {
                                 OrderId = donhang.OrderId,
                                 ProductId = item.product.ProductId,
-                                OrderNumber = 0, // Mặc định hoặc theo logic của bạn
+                                OrderNumber = maxOrderNumber + 1, 
                                 Quantity = item.quantity,
                                 TotalMoney = Convert.ToDouble(item.TotalMoney),
                                 CreateDate = DateTime.Now,
@@ -321,18 +328,17 @@ namespace SanThuongMaiG15.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                // Kiểm tra đơn hàng với Include để lấy thêm thông tin liên quan
+         
                 var donhang = _context.Orders
-                    .Include(x => x.OrderDetails)  // Thêm Include nếu cần thông tin chi tiết
+                    .Include(x => x.OrderDetails)  
                     .Where(x => x.BuyerId == Convert.ToInt32(taikhoanID))
                     .OrderByDescending(x => x.OrderDate)
                     .FirstOrDefault();
 
-                // Debug logging
+         
                 if (donhang == null)
                 {
                     Console.WriteLine("Không tìm thấy đơn hàng cho user này");
-                    // Kiểm tra trực tiếp trong database
                     var allOrders = _context.Orders
                         .Where(x => x.BuyerId == Convert.ToInt32(taikhoanID))
                         .ToList();
@@ -343,13 +349,14 @@ namespace SanThuongMaiG15.Controllers
                     Console.WriteLine($"Tìm thấy đơn hàng - OrderId: {donhang.OrderId}");
                 }
 
-                // Nếu không tìm thấy đơn hàng, vẫn tạo ViewModel nhưng chỉ với thông tin user
+                
                 MuaHangSuccessVM successVM = new MuaHangSuccessVM
                 {
                     Username = khachhang.Username,
                     PhoneNumber = khachhang.PhoneNumber,
-                    OrderId = donhang?.OrderId ?? 0,  // Sử dụng null conditional operator
-                    Address = donhang?.Address ?? "Không có thông tin"  // Giá trị mặc định nếu null
+                    OrderId = donhang?.OrderId ?? 0,  
+                    Address = donhang?.Address ?? "Không có thông tin",  
+                    Note = donhang.Note ?? string.Empty,
                 };
 
                 return View(successVM);
@@ -363,5 +370,93 @@ namespace SanThuongMaiG15.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+
+
+        //[Route("thanhcong.html", Name = "thanhcong")]
+        //public IActionResult Success(MuaHangVM muaHang)
+        //{
+
+        //    var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
+        //    if (cart == null || !cart.Any())
+        //    {
+        //        _notifyService.Error("Giỏ hàng trống");
+        //        return RedirectToAction("Index", "Home");
+        //    }
+
+        //    try
+        //    {
+        //        var taikhoanID = User.FindFirstValue("UserID");
+        //        if (string.IsNullOrEmpty(taikhoanID))
+        //        {
+        //            _notifyService.Error("Vui lòng đăng nhập");
+        //            return RedirectToAction("Login", "Accounts");
+        //        }
+
+        //        // Tạo đơn hàng mới
+        //        Order donhang = new Order
+        //        {
+        //            BuyerId = Convert.ToInt32(taikhoanID),
+        //            OrderDate = DateTime.Now,
+        //            TransactStatusId = 1,
+        //            TotalMoney = Convert.ToDouble(cart.Sum(x => x.TotalMoney)),
+        //            Note = muaHang.Note ?? string.Empty, 
+        //            Address = muaHang.Address,
+        //            PaymentId = muaHang.PaymentID,
+        //        };
+
+        //        _context.Orders.Add(donhang);
+        //        var result = _context.SaveChanges();
+
+        //        if (result > 0)
+        //        {
+        //            // Tạo chi tiết đơn hàng cho từng sản phẩm trong giỏ
+        //            foreach (var item in cart)
+        //            {
+        //                OrderDetail orderDetail = new OrderDetail
+        //                {
+        //                    OrderId = donhang.OrderId,
+        //                    ProductId = item.product.ProductId,
+        //                    Quantity = item.quantity,
+        //                    TotalMoney = Convert.ToDouble(item.TotalMoney),
+        //                    CreateDate = DateTime.Now,
+        //                    Price = Convert.ToDouble(item.product.Price)
+        //                };
+        //                _context.OrderDetails.Add(orderDetail);
+        //            }
+
+        //            _context.SaveChanges();
+
+
+
+        //            // Chuẩn bị thông tin cho trang hiển thị đơn hàng thành công
+        //            MuaHangSuccessVM successVM = new MuaHangSuccessVM
+        //            {
+        //                Username = User.FindFirstValue("Username"),
+        //                OrderId = donhang.OrderId,
+        //                PhoneNumber = User.FindFirstValue("PhoneNumber"),
+        //                Address = donhang.Address,
+        //                Note = donhang.Note ?? string.Empty,
+        //            };
+
+        //            _notifyService.Success("Đơn hàng đặt thành công");
+        //            // Xóa giỏ hàng khỏi Session sau khi đặt hàng thành công
+        //            HttpContext.Session.Remove("GioHang");
+        //            return View(successVM);
+
+        //        }
+        //        else
+        //        {
+        //            _notifyService.Error("Lỗi khi tạo đơn hàng");
+        //            return RedirectToAction("Index", "Checkout");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error in Success action: {ex.Message}");
+        //        _notifyService.Error("Có lỗi xảy ra khi xử lý đơn hàng");
+        //        return RedirectToAction("Index", "Home");
+        //    }
+        //}
+
     }
 }

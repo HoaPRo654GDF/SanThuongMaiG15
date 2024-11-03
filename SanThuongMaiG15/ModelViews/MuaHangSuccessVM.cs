@@ -4,7 +4,7 @@ namespace SanThuongMaiG15.ModelViews
 {
     public class MuaHangSuccessVM
     {
-        public int UserId { get; set; }
+        public int BuyerId { get; set; }
 
         public int OrderId { get; set; }
 
