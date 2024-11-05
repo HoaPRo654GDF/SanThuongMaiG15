@@ -109,13 +109,17 @@ INSERT INTO [dbo].[Users] (Username, Password, Email, PhoneNumber, RoleID, Activ
 VALUES 
 ('admin', '25f9e794323b453885f5181f1b624d0b', 'admin@gmail.com', '0912345678', 3, 1); --mk đã mã hóa , điền 123456789
 Go
+INSERT INTO [dbo].[Users] (Username, Password, Email, PhoneNumber, RoleID, Active)
+VALUES 
+('lth', '25f9e794323b453885f5181f1b624d0b', 'lth@gmail.com', '0912345678', 2, 1);
+select * from Users
 INSERT INTO [dbo].[Categories] (CatName, [Description]) 
 VALUES 
 ('Thoi Trang', 'San pham thoi trang nhu quan ao, giay dep va phu kien,..'), 
 ('The Thao', 'Dung cu va trang phuc the thao nhu giay chay bo, vot tennis,...'), 
 ('Cong Nghe', 'Thiet bi dien tu nhu dien thoai, may tinh, tai nghe,...'), 
 ('Suc Khoe', 'San pham ho tro suc khoe nhu thuc pham chuc nang, dung cu y te,...');
-
+select * from Categories
 Go
 DELETE FROM Products; -- xóa bản ghi trong bảng
 
@@ -132,10 +136,10 @@ Go
 INSERT INTO [dbo].[Products] (ProductName, [Description], CatID, Price, Quantity, SellerID, DatePosted, ImageURL, ProductStatus) 
 VALUES 
 -- Thời Trang
-('Giay Nike Air Force 1', 'Giay the thao Nike, size 42, mau trang.', 1, 20, 3, 16, GETDATE(), 'https://example.com/nike-af1.jpg', 'Con hang'),
-('Ao Khoac Jean Unisex', 'Ao khoac jean thoi trang, size M.', 1, 17, 5, 16, GETDATE(), 'https://example.com/jean-jacket.jpg', 'Con hang'),
-('Giay Converse Chuck Taylor', 'Giay Converse dang thoi trang, size 39, mau den.', 1, 18, 4, 16, GETDATE(), 'https://example.com/converse.jpg', 'Con hang'),
-('Quan Jeans Nam', 'Quan jeans nam, size L, mau xanh.', 1, 14, 8, 16, GETDATE(), 'https://example.com/jeans.jpg', 'Con hang'),
+('Giay Nike Air Force 1', 'Giay the thao Nike, size 42, mau trang.', 1, 20, 3, 2, GETDATE(), 'https://example.com/nike-af1.jpg', 'Con hang'),
+('Ao Khoac Jean Unisex', 'Ao khoac jean thoi trang, size M.', 1, 17, 5, 2, GETDATE(), 'https://example.com/jean-jacket.jpg', 'Con hang'),
+('Giay Converse Chuck Taylor', 'Giay Converse dang thoi trang, size 39, mau den.', 1, 18, 4, 2, GETDATE(), 'https://example.com/converse.jpg', 'Con hang'),
+('Quan Jeans Nam', 'Quan jeans nam, size L, mau xanh.', 1, 14, 8, 2, GETDATE(), 'https://example.com/jeans.jpg', 'Con hang'),
 
 
 -- The Thao
@@ -208,11 +212,11 @@ VALUES
 (20, '2024-11-08', 4, 11, 'Ghi chu khong can thiet', '753 Duong H, Quan 8', NULL),  -- 1 x 11 = 11
 (20, '2024-11-09', 5, 80, 'Giao hang vao cuoi tuan', '246 Duong I, Quan 9', NULL),  -- 5 x 16 = 80
 (20, '2024-11-10', 5, 16, 'Dat hang tu som', '369 Duong J, Quan 10', NULL);  -- 1 x 16 = 16
-
+select * from Users
 
 INSERT INTO [dbo].[OrderDetails] (OrderID, ProductID, OrderNumber, Quantity, TotalMoney, CreateDate, Price)
 VALUES 
-(1, 1, 1, 2, 40, '2024-11-01', 20),  -- Đơn hàng 1
+(2, 1, 1, 2, 40, '2024-11-01', 20),  -- Đơn hàng 1
 (1, 2, 2, 1, 17, '2024-11-01', 17),  -- Đơn hàng 1
 (2, 1, 1, 3, 60, '2024-11-02', 20),  -- Đơn hàng 2
 (2, 3, 2, 2, 36, '2024-11-02', 18),  -- Đơn hàng 2
@@ -239,3 +243,6 @@ SELECT DATABASEPROPERTYEX('EcC2C', 'Collation') AS DatabaseCollation;
 
 SELECT * FROM Users WHERE Email = 'tph5@gmail.com';
 SELECT * FROM Products WHERE SellerID = 16 AND CatID = 1;
+
+
+select * from Categories

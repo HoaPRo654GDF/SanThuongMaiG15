@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PagedList.Core;
 using SanThuongMaiG15.Models;
-
+using SanThuongMaiG15.ModelViews;
 namespace SanThuongMaiG15.Areas.Seller.Controllers
 {
     [Area("Seller")]
@@ -248,6 +248,20 @@ namespace SanThuongMaiG15.Areas.Seller.Controllers
         private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.ProductId == id);
+        }
+
+        [HttpGet]
+        public Task<IActionResult> Filter(string name)
+        {
+            Console.WriteLine("name");
+            Console.WriteLine(name);
+            var pageNumber = 1;
+            var pageSize = 20;
+            var Cat =  _context.Categories.Where(c => c.CatName == name).FirstOrDefault();
+            Console.WriteLine(Cat);
+             var products = _context.Products.Where(p => p.CatId == Cat.CatId).ToList();
+            PagedList<Product> list_pd = new PagedList<Product>(products.AsQueryable(), pageNumber, pageSize);
+            return Task.FromResult<IActionResult>(View("Index",list_pd));
         }
     }
 }

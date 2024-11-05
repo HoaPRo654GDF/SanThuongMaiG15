@@ -1,5 +1,6 @@
-﻿@using PagedList.Core.Mvc;
-@model PagedList.Core.IPagedList<SanThuongMaiG15.Models.Product>
+﻿@using SanThuongMaiG15.ModelViews;
+@using PagedList.Core.Mvc;
+@model PagedList.Core.IPagedList<SanThuongMaiG15.Models.Product> 
 
 @{
     ViewData["Title"] = "Quản lý sản phẩm";
@@ -20,10 +21,18 @@
             <div class="col-lg-8">
                 <div class="d-md-flex">
                     <div class="m-b-10 m-r-15">
-                        <select class="custom-select" id="txtCatID" name="txtCatID" style="min-width: 200px;" asp-items="ViewBag.DanhMuc">
-                            <option disabled selected>Chọn Danh Mục</option>
-                            <option value="0">All</option>
-                        </select>
+                        @* <form asp-controller="SellerProducts" asp-action="Filter" method="get"> *@
+                            <select  class="custom-select" id="txtCatID" name="txtCatID" style="min-width: 200px;"  >
+                                <option disabled selected>Chọn Danh Mục</option>
+                                <option value="0">All</option>
+                                @foreach (var cat in (SelectList)ViewData["DanhMuc"])
+                                 {
+                                <option asp-route-id="@cat.Value" name="@cat.Value">@cat.Text</option>
+                                 }
+
+                            </select>
+                        @* </form> *@
+                      
                     </div>
                 </div>
             </div>
@@ -92,10 +101,33 @@
                 </tbody>
             </table>
             <div aria-label="Page navigation example">
-                <ul class="pagination">
+               <ul class="pagination">
                     <pager class="pager-container" list="@Model" asp-area="Seller" asp-controller="SellerProducts" asp-route-CatID="ViewBag.CurrentCateID" asp-action="Index" />
                 </ul>
-            </div>
+         </div>
         </div>
     </div>
 </div>
+<script>
+    alert("123");
+    document.addEventListener("DOMContentLoaded", function () {
+        var select = document.querySelector(".custom-select");
+        select.addEventListener("change", function(){
+            alert("34");
+            var selectID = this.value;
+            alert(selectID);
+            fetch(`/Seller/Filter/${selectID}`, {
+                method: 'GET',
+            }).then(respone=>{
+                if (respone.ok) {
+                    location.reload();
+
+                }
+                else {
+                    alert("Fail");
+                }
+            })
+        })
+    });
+ 
+</script>
