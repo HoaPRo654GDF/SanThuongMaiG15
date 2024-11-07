@@ -79,7 +79,11 @@ namespace SanThuongMaiG15.Controllers
                 return NotFound();
             }
 
-
+            var userIdClaim = User.FindFirst("UserID")?.Value;
+            if (int.TryParse(userIdClaim, out int userId) && userId != id)
+            {
+                return Forbid();
+            }
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
