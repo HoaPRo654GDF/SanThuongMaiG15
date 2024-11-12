@@ -104,10 +104,31 @@ VALUES
 ('Buyer', 'Người mua hàng'),
 ('Seller', 'Người bán hàng'),
 ('Admin', 'Quản trị viên');
+Go
+DELETE FROM [Users]; -- xóa bản ghi trong bảng
+Go
+Go
+DBCC CHECKIDENT ('Users', RESEED, 0);
+Go
+INSERT INTO [dbo].[Users] (Username, [Password], Email, PhoneNumber, RoleID, Active)
+VALUES 
+('TPH', '25f9e794323b453885f5181f1b624d0b', 'tph@gmail.com', '0946427269', 1, 1),-- MK 123456789
+('tph2', '4297f44b13955235245b2497399d7a93', 'tph2@gmail.com', '0946427265', 2, 1), --MK 123123
+('TPH3', '25f9e794323b453885f5181f1b624d0b', 'tranhoa1422003@gmail.com', '09464272694', 2, 1),-- MK 123456789
+('tph4', 'e10adc3949ba59abbe56e057f20f883e', 'tph4@gmail.com', '0946427264', 2, 1),--MK 123456
+('TPH5', '25f9e794323b453885f5181f1b624d0b', 'tph5@gmail.com', '09464272654', 2, 1),-- MK 123456789
+('TPH6', '25f9e794323b453885f5181f1b624d0b', 'tph6@gmail.com', '0946427211', 1, 1),-- MK 123456789
+('TPH7', '25f9e794323b453885f5181f1b624d0b', 'tph7@gmail.com', '0946427211', 1, 1),-- MK 123456789
+('TPH8', 'e10adc3949ba59abbe56e057f20f883e', 'tph8@gmail.com', '0946427276', 1, 1);--MK 123456
 
+Go
 INSERT INTO [dbo].[Users] (Username, Password, Email, PhoneNumber, RoleID, Active)
 VALUES 
 ('admin', '25f9e794323b453885f5181f1b624d0b', 'admin@gmail.com', '0912345678', 3, 1); --mk đã mã hóa , điền 123456789
+Go
+DELETE FROM [Categories];
+Go
+DBCC CHECKIDENT ('Categories', RESEED, 0);
 Go
 INSERT INTO [dbo].[Categories] (CatName, [Description]) 
 VALUES 
@@ -119,52 +140,49 @@ VALUES
 Go
 DELETE FROM Products; -- xóa bản ghi trong bảng
 
-DELETE FROM [Categories];
+
 Go
 SELECT MAX(ProductID) FROM Products; -- kiểm tra id hiện tại của bảng
 Go
 DBCC CHECKIDENT ('Products', RESEED, 0); -- resetID trong bảng(ko có bản ghi nào)
-DBCC CHECKIDENT ('Categories', RESEED, 0);
-
-DELETE FROM [Categories];
 
 Go
 INSERT INTO [dbo].[Products] (ProductName, [Description], CatID, Price, Quantity, SellerID, DatePosted, ImageURL, ProductStatus) 
 VALUES 
 -- Thời Trang
-('Giay Nike Air Force 1', 'Giay the thao Nike, size 42, mau trang.', 1, 20, 3, 16, GETDATE(), 'https://example.com/nike-af1.jpg', 'Con hang'),
-('Ao Khoac Jean Unisex', 'Ao khoac jean thoi trang, size M.', 1, 17, 5, 16, GETDATE(), 'https://example.com/jean-jacket.jpg', 'Con hang'),
-('Giay Converse Chuck Taylor', 'Giay Converse dang thoi trang, size 39, mau den.', 1, 18, 4, 16, GETDATE(), 'https://example.com/converse.jpg', 'Con hang'),
-('Quan Jeans Nam', 'Quan jeans nam, size L, mau xanh.', 1, 14, 8, 16, GETDATE(), 'https://example.com/jeans.jpg', 'Con hang'),
+('Giay Nike Air Force 1', 'Giay the thao Nike, size 42, mau trang.', 1, 20, 3, 5, GETDATE(), 'https://example.com/nike-af1.jpg', 'Con hang'),
+('Ao Khoac Jean Unisex', 'Ao khoac jean thoi trang, size M.', 1, 17, 5, 5, GETDATE(), 'https://example.com/jean-jacket.jpg', 'Con hang'),
+('Giay Converse Chuck Taylor', 'Giay Converse dang thoi trang, size 39, mau den.', 1, 18, 4, 5, GETDATE(), 'https://example.com/converse.jpg', 'Con hang'),
+('Quan Jeans Nam', 'Quan jeans nam, size L, mau xanh.', 1, 14, 8, 5, GETDATE(), 'https://example.com/jeans.jpg', 'Con hang'),
 
 
 -- The Thao
-('Vot Tennis Wilson', 'Vot tennis Wilson chinh hang.', 2, 14, 2, 16, GETDATE(), 'https://example.com/tennis-racket.jpg', 'Con hang'),
-('Bong Da Adidas', 'Bong da Adidas, size 5.', 2, 15, 10, 16, GETDATE(), 'https://example.com/adidas-ball.jpg', 'Con hang'),
-('Giay Chay Bo Nike', 'Giay chay bo Nike, size 40, mau xanh la.', 2, 16, 5, 16, GETDATE(), 'https://example.com/nike-running.jpg', 'Con hang'),
-('Kinh Da Bơi', 'Kinh da boi chong nuoc, mau xanh.', 2, 11, 10, 16, GETDATE(), 'https://example.com/swim-goggles.jpg', 'Con hang'),
+('Vot Tennis Wilson', 'Vot tennis Wilson chinh hang.', 2, 14, 2, 5, GETDATE(), 'https://example.com/tennis-racket.jpg', 'Con hang'),
+('Bong Da Adidas', 'Bong da Adidas, size 5.', 2, 15, 10, 5, GETDATE(), 'https://example.com/adidas-ball.jpg', 'Con hang'),
+('Giay Chay Bo Nike', 'Giay chay bo Nike, size 40, mau xanh la.', 2, 16, 5, 5, GETDATE(), 'https://example.com/nike-running.jpg', 'Con hang'),
+('Kinh Da Bơi', 'Kinh da boi chong nuoc, mau xanh.', 2, 11, 10, 5, GETDATE(), 'https://example.com/swim-goggles.jpg', 'Con hang'),
 
 
 -- Cong Nghe
-('iPhone 14 Pro Max', 'iPhone 14 Pro Max moi 99%, bao hanh 12 thang.', 3, 1000, 1, 16, GETDATE(), 'https://example.com/iphone14.jpg', 'Con hang'),
-('MacBook Pro 2021', 'MacBook Pro 16 inch, M1 Max, RAM 32GB.', 3, 1500, 1, 16, GETDATE(), 'https://example.com/macbook-pro.jpg', 'Con hang'),
-('Tai Nghe Bluetooth Sony', 'Tai nghe Bluetooth Sony chinh hang, mau den.', 3, 2000, 15, 16, GETDATE(), 'https://example.com/sony-headphones.jpg', 'Con hang'),
-('Tablet Samsung Galaxy Tab', 'Tablet Samsung Galaxy Tab, RAM 4GB, mau trang.', 3, 1200, 3, 16, GETDATE(), 'https://example.com/samsung-tablet.jpg', 'Con hang'),
+('iPhone 14 Pro Max', 'iPhone 14 Pro Max moi 99%, bao hanh 12 thang.', 3, 1000, 1, 5, GETDATE(), 'https://example.com/iphone14.jpg', 'Con hang'),
+('MacBook Pro 2021', 'MacBook Pro 16 inch, M1 Max, RAM 32GB.', 3, 1500, 1, 5, GETDATE(), 'https://example.com/macbook-pro.jpg', 'Con hang'),
+('Tai Nghe Bluetooth Sony', 'Tai nghe Bluetooth Sony chinh hang, mau den.', 3, 2000, 15, 5, GETDATE(), 'https://example.com/sony-headphones.jpg', 'Con hang'),
+('Tablet Samsung Galaxy Tab', 'Tablet Samsung Galaxy Tab, RAM 4GB, mau trang.', 3, 1200, 3, 5, GETDATE(), 'https://example.com/samsung-tablet.jpg', 'Con hang'),
 
 
 -- Suc Khoe
-('Vien Uong Vitamin C 500mg', 'Tang cuong de khang va chong oxy hoa.', 4, 4, 50, 16, GETDATE(), 'https://example.com/vitamin-c.jpg', 'Con hang'),
-('May Do Huyet Ap Omron', 'May do huyet ap tu dong, bao hanh 24 thang.', 4, 200, 10, 16, GETDATE(), 'https://example.com/blood-pressure.jpg', 'Con hang'),
-('Khau Trang Y Te 4 Lop', 'Hop 50 cai, khang khuan.', 4, 4, 100, 16, GETDATE(), 'https://example.com/medical-mask.jpg', 'Con hang'),
-('Kem Chong Nang', 'Kem chong nang cho da, bao ve da, mau trang.', 4, 6, 25, 16, GETDATE(), 'https://example.com/sunscreen.jpg', 'Con hang'),
-('Bong Banh Ngoai Troi', 'Bong banh ngoai troi, chong nuoc, mau xanh.', 4, 7, 60, 16, GETDATE(), 'https://example.com/outdoor-ball.jpg', 'Con hang');
+('Vien Uong Vitamin C 500mg', 'Tang cuong de khang va chong oxy hoa.', 4, 4, 50, 5, GETDATE(), 'https://example.com/vitamin-c.jpg', 'Con hang'),
+('May Do Huyet Ap Omron', 'May do huyet ap tu dong, bao hanh 24 thang.', 4, 200, 10, 5, GETDATE(), 'https://example.com/blood-pressure.jpg', 'Con hang'),
+('Khau Trang Y Te 4 Lop', 'Hop 50 cai, khang khuan.', 4, 4, 100, 5, GETDATE(), 'https://example.com/medical-mask.jpg', 'Con hang'),
+('Kem Chong Nang', 'Kem chong nang cho da, bao ve da, mau trang.', 4, 6, 25, 5, GETDATE(), 'https://example.com/sunscreen.jpg', 'Con hang'),
+('Bong Banh Ngoai Troi', 'Bong banh ngoai troi, chong nuoc, mau xanh.', 4, 7, 60, 5, GETDATE(), 'https://example.com/outdoor-ball.jpg', 'Con hang');
 GO
 
 Go
 INSERT INTO [dbo].[Products] (ProductName, [Description], CatID, Price, Quantity, SellerID, DatePosted, ImageURL, ProductStatus) 
 VALUES 
 -- Thời Trang
-('Giày bánh bao Fukau 5', 'Giay thể thao Fukau size 41, màu trắng.', 1, 4, 3, 15, GETDATE(), 'https://example.com/nike-af1.jpg', 'Con hang');
+('Giày bánh bao Fukau 5', 'Giay thể thao Fukau size 41, màu trắng.', 1, 4, 3, 4, GETDATE(), 'https://example.com/nike-af1.jpg', 'Con hang');
 Go
 Select*From Products;
 Go
@@ -181,13 +199,16 @@ DELETE FROM Products;
 Go
 DBCC CHECKIDENT ('Products', RESEED, 0);
 Go
+DELETE FROM [TransactStatus];
+Go
+DBCC CHECKIDENT ('TransactStatus', RESEED, 0);
+Go
 INSERT INTO [dbo].[TransactStatus] (Status, Description)
 VALUES 
 ('Dang xu ly', 'Don hang dang trong qua trinh xu ly.'),
 ('Da giao', 'Don hang da duoc giao cho nguoi mua.'),
-('Da huy', 'Don hang da bi huy boi nguoi mua hoac nguoi ban.'),
-('Cho xac nhan', 'Don hang dang cho xac nhan tu nguoi ban.'),
-('Da hoan tat', 'Don hang da hoan tat va khong con yeu cau xu ly.');
+('Da huy', 'Don hang da bi huy boi nguoi mua hoac nguoi ban.');
+
 
 DELETE FROM [Orders];
 DELETE FROM [OrderDetails];
@@ -198,16 +219,17 @@ DBCC CHECKIDENT ('OrderDetails', RESEED, 0);
 Go
 INSERT INTO [dbo].[Orders] (BuyerID, OrderDate, TransactStatusID, TotalMoney, Note, [Address], PaymentID)
 VALUES 
-(12, '2024-11-01', 1, 57, 'Giao hang nhanh', '123 Duong A, Quan 1', NULL),  -- 2 x 20 + 1 x 17 = 57
-(12, '2024-11-02', 1, 96, 'Ghi chu dac biet', '456 Duong B, Quan 2', NULL),  -- 
-(12, '2024-11-03', 2, 14, 'De lai truoc cua', '789 Duong C, Quan 3', NULL),  -- 1 x 14 = 14
-(19, '2024-11-04', 2, 28, 'Kiem tra hang truoc khi nhan', '321 Duong D, Quan 4', NULL),  -- 2 x 14 = 28
-(19, '2024-11-05', 3, 80, 'Ghi chu them', '654 Duong E, Quan 5', NULL),  -- 5 x 16 = 80
-(19, '2024-11-06', 3, 11, 'Giao hang vao buoi chieu', '987 Duong F, Quan 6', NULL),  -- 1 x 11 = 11
-(20, '2024-11-07', 4, 1000, 'Khach hang VIP', '159 Duong G, Quan 7', NULL),  -- 3 x 1000 = 3000
-(20, '2024-11-08', 4, 11, 'Ghi chu khong can thiet', '753 Duong H, Quan 8', NULL),  -- 1 x 11 = 11
-(20, '2024-11-09', 5, 80, 'Giao hang vao cuoi tuan', '246 Duong I, Quan 9', NULL),  -- 5 x 16 = 80
-(20, '2024-11-10', 5, 16, 'Dat hang tu som', '369 Duong J, Quan 10', NULL);  -- 1 x 16 = 16
+(1, '2024-11-01', 1, 57, 'Giao hang nhanh', '123 Duong A, Quan 1', NULL),  -- 2 x 20 + 1 x 17 = 57
+(1, '2024-11-02', 1, 96, 'Ghi chu dac biet', '456 Duong B, Quan 2', NULL),  -- 3 x 20 + 2 x 18 = 96
+(1, '2024-11-03', 2, 14, 'De lai truoc cua', '789 Duong C, Quan 3', NULL),  -- 1 x 14 = 14
+(6, '2024-11-04', 2, 28, 'Kiem tra hang truoc khi nhan', '321 Duong D, Quan 4', NULL),  -- 2 x 14 = 28
+(6, '2024-11-05', 3, 80, 'Ghi chu them', '654 Duong E, Quan 5', NULL),  -- 5 x 16 = 80
+(6, '2024-11-06', 3, 11, 'Giao hang vao buoi chieu', '987 Duong F, Quan 6', NULL),  -- 1 x 11 = 11
+(7, '2024-11-07', 3, 3000, 'Khach hang VIP', '159 Duong G, Quan 7', NULL),  -- 3 x 1000 = 3000
+(7, '2024-11-08', 2, 11, 'Ghi chu khong can thiet', '753 Duong H, Quan 8', NULL),  -- 1 x 11 = 11
+(7, '2024-11-09', 1, 80, 'Giao hang vao cuoi tuan', '246 Duong I, Quan 9', NULL),  -- 5 x 16 = 80
+(7, '2024-11-10', 1, 16, 'Dat hang tu som', '369 Duong J, Quan 10', NULL);  -- 1 x 16 = 16
+
 
 
 INSERT INTO [dbo].[OrderDetails] (OrderID, ProductID, OrderNumber, Quantity, TotalMoney, CreateDate, Price)
@@ -219,9 +241,10 @@ VALUES
 (3, 4, 1, 1, 14, '2024-11-03', 14),  -- Đơn hàng 3
 (4, 5, 1, 2, 28, '2024-11-04', 14),  -- Đơn hàng 4
 (4, 6, 2, 1, 15, '2024-11-04', 15),  -- Đơn hàng 4
-(5, 7, 1, 5, 80, '2024-11-05', 16), -- Đơn hàng 5
+(5, 7, 1, 5, 80, '2024-11-05', 16),  -- Đơn hàng 5
 (6, 8, 1, 1, 11, '2024-11-06', 11),  -- Đơn hàng 6
 (7, 9, 1, 3, 3000, '2024-11-07', 1000);   -- Đơn hàng 7
+
 
 ALTER TABLE [dbo].[Products] 
 ALTER COLUMN [ProductName] NVARCHAR(255) COLLATE Vietnamese_CI_AS;
