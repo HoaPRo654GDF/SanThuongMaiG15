@@ -1,0 +1,75 @@
+﻿@using PagedList.Core.Mvc;
+@model PagedList.Core.IPagedList<SanThuongMaiG15.Models.Order>
+
+@{
+    ViewData["Title"] = "Quản lý đơn hàng";
+    Layout = "~/Areas/Seller/Views/Shared/_SellerLayout.cshtml";
+}
+
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Seller" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <span class="breadcrumb-item active">Danh sách đơn hàng</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+            </div>    
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Người mua</th>
+                        <th>Ngày mua</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (@Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @item.OrderId
+                                </td>
+                                <td>
+                                    @item.Buyer.Email
+                                </td>
+         
+                                <td>@item.OrderDate</td>
+                                <td>@item.TotalMoney $</td>
+
+                                <td>@item.TransactStatus.Status</td>
+                                
+                                <td>
+                                    <a class="btn btn-primary m-r-5" asp-area="Seller" asp-controller="SellerOrders" asp-action="Details" asp-route-id="@item.OrderId">Xem đơn hàng</a>
+                                    <a class="btn btn-secondary m-r-5 " asp-area="Seller" asp-controller="SellerOrders" asp-action="Edit" asp-route-id="@item.OrderId">Chỉnh sửa</a>
+                                    <a class="btn btn-success m-r-5" asp-area="Seller" asp-controller="SellerOrders" asp-action="Delete" asp-route-id="@item.OrderId">Xóa</a>
+
+                                </td>
+                            </tr>
+
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-area="Seller" asp-controller="SellerOrders"  asp-action="Index" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
