@@ -14,9 +14,9 @@ namespace SanThuongMaiG15.Controllers
 {
     public class OrdersController : Controller
     {
-        private readonly EcC2CContext _context;
+        private readonly EcC2C_2Context _context;
 
-        public OrdersController(EcC2CContext context)
+        public OrdersController(EcC2C_2Context context)
         {
             _context = context;
         }
@@ -29,12 +29,12 @@ namespace SanThuongMaiG15.Controllers
 
             int userId = Convert.ToInt32(taikhoanID);
 
-            var ecC2CContext = _context.Orders
+            var EcC2C_2Context = _context.Orders
                 .Include(o => o.Buyer)
                 .Include(o => o.TransactStatus)
                 .Where(o => o.BuyerId == userId); 
 
-            return View(await ecC2CContext.ToListAsync());
+            return View(await EcC2C_2Context.ToListAsync());
         }
 
         public async Task<IActionResult> Details(int? id)

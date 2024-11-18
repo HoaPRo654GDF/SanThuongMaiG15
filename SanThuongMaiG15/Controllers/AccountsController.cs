@@ -20,10 +20,10 @@ namespace SanThuongMaiG15.Controllers
 {
     public class AccountsController : Controller
     {
-        private readonly EcC2CContext _context;
+        private readonly EcC2C_2Context _context;
         public INotyfService _notifyService { get; }
         private readonly ILogger<AccountsController> _logger;
-        public AccountsController(EcC2CContext context, INotyfService notifyService, ILogger<AccountsController> logger)
+        public AccountsController(EcC2C_2Context context, INotyfService notifyService, ILogger<AccountsController> logger)
         {
             _context = context;
             _notifyService = notifyService;

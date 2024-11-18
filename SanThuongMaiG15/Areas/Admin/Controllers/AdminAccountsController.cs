@@ -12,9 +12,9 @@ namespace SanThuongMaiG15.Areas.Admin.Controllers
     [Area("Admin")]
     public class AdminAccountsController : Controller
     {
-        private readonly EcC2CContext _context;
+        private readonly EcC2C_2Context _context;
 
-        public AdminAccountsController(EcC2CContext context)
+        public AdminAccountsController(EcC2C_2Context context)
         {
             _context = context;
         }
@@ -28,8 +28,8 @@ namespace SanThuongMaiG15.Areas.Admin.Controllers
             lsTrangThai.Add(new SelectListItem() { Text = "Active", Value = "1" });
             lsTrangThai.Add(new SelectListItem() { Text = "Block", Value = "0" });
             ViewData["lsTrangThai"] = lsTrangThai;
-            var ecC2CContext = _context.Users.Include(u => u.Role);
-            return View(await ecC2CContext.ToListAsync());
+            var EcC2C_2Context = _context.Users.Include(u => u.Role);
+            return View(await EcC2C_2Context.ToListAsync());
         }
 
         // GET: Admin/AdminAccounts/Details/5

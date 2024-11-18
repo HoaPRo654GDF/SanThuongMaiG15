@@ -14,9 +14,9 @@ namespace SanThuongMaiG15.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly  EcC2CContext _context;
+        private readonly  EcC2C_2Context _context;
 
-        public ProductController(EcC2CContext context)
+        public ProductController(EcC2C_2Context context)
         {
 
             _context = context;

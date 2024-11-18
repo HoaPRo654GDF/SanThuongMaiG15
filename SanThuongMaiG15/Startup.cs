@@ -35,7 +35,7 @@ namespace SanThuongMaiG15
         {
             
             var stringConnectdb = Configuration.GetConnectionString("dbEce");
-            services.AddDbContext<EcC2CContext>(options => options.UseSqlServer(stringConnectdb));
+            services.AddDbContext<EcC2C_2Context>(options => options.UseSqlServer(stringConnectdb));
             //services.AddMvc();
             services.AddLogging(builder =>
             {

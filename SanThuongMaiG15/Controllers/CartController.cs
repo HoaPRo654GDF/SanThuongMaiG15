@@ -14,10 +14,10 @@ namespace SanThuongMaiG15.Controllers
 {
     public class CartController : Controller
     {
-        private readonly EcC2CContext _context;
+        private readonly EcC2C_2Context _context;
         public INotyfService _notifyService { get; }
         private readonly ILogger<CartController> _logger;
-        public CartController(EcC2CContext context, INotyfService notifyService, ILogger<CartController> logger)
+        public CartController(EcC2C_2Context context, INotyfService notifyService, ILogger<CartController> logger)
         {
             _context = context;
             _notifyService = notifyService;

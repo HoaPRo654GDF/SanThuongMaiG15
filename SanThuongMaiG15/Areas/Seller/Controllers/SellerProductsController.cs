@@ -17,9 +17,9 @@ namespace SanThuongMaiG15.Areas.Seller.Controllers
     [Authorize(Roles ="2")]
     public class SellerProductsController : Controller
     {
-        private readonly EcC2CContext _context;
+        private readonly EcC2C_2Context _context;
 
-        public SellerProductsController(EcC2CContext context)
+        public SellerProductsController(EcC2C_2Context context)
         {
             _context = context;
         }

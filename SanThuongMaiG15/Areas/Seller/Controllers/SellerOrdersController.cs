@@ -13,9 +13,9 @@ namespace SanThuongMaiG15.Areas.Seller.Controllers
     [Area("Seller")]
     public class SellerOrdersController : Controller
     {
-        private readonly EcC2CContext _context;
+        private readonly EcC2C_2Context _context;
 
-        public SellerOrdersController(EcC2CContext context)
+        public SellerOrdersController(EcC2C_2Context context)
         {
             _context = context;
         }

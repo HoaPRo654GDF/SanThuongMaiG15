@@ -14,9 +14,9 @@ namespace SanThuongMaiG15.Areas.Admin.Controllers
     [Area("Admin")]
     public class AdminProductsController : Controller
     {
-        private readonly EcC2CContext _context;
+        private readonly EcC2C_2Context _context;
 
-        public AdminProductsController(EcC2CContext context)
+        public AdminProductsController(EcC2C_2Context context)
         {
             _context = context;
         }

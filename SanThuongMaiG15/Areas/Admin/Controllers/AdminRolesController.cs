@@ -12,9 +12,9 @@ namespace SanThuongMaiG15.Areas.Admin.Controllers
     [Area("Admin")]
     public class AdminRolesController : Controller
     {
-        private readonly EcC2CContext _context;
+        private readonly EcC2C_2Context _context;
 
-        public AdminRolesController(EcC2CContext context)
+        public AdminRolesController(EcC2C_2Context context)
         {
             _context = context;
         }

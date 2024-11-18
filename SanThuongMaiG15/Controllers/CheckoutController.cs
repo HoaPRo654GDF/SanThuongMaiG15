@@ -18,9 +18,9 @@ namespace SanThuongMaiG15.Controllers
 {
     public class CheckoutController : Controller
     {
-        private readonly EcC2CContext _context;
+        private readonly EcC2C_2Context _context;
         public INotyfService _notifyService { get; }
-        public CheckoutController(EcC2CContext context, INotyfService notifyService, ILogger<AccountsController> logger)
+        public CheckoutController(EcC2C_2Context context, INotyfService notifyService, ILogger<AccountsController> logger)
         {
             _context = context;
             _notifyService = notifyService;

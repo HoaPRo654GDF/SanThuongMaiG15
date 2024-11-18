@@ -13,10 +13,10 @@ namespace SanThuongMaiG15.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly EcC2CContext _context;
+        private readonly EcC2C_2Context _context;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger , EcC2CContext context)
+        public HomeController(ILogger<HomeController> logger , EcC2C_2Context context)
         {
             _logger = logger;
             _context = context;
